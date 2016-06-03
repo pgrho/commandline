@@ -34,6 +34,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CliArgumentStyle.cs" />
+    <Compile Include="CliArgumentStyleAttribute.cs" />
     <Compile Include="CliOptionMetadataCollection.cs" />
     <Compile Include="CliAssignmentSymbolAttribute.cs" />
     <Compile Include="CliDefaultOptionAttribute.cs" />

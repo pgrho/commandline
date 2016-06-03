@@ -15,7 +15,7 @@ namespace Shipwreck.CommandLine
 
         public CliIgnoreAttribute(bool isIgnored)
         {
-            IsIgnored = true;
+            IsIgnored = isIgnored;
         }
 
         public virtual bool IsIgnored { get; }

@@ -16,8 +16,9 @@ namespace Shipwreck.CommandLine
         private static readonly ReadOnlyCollection<string> DefaultAssignmentSymbols = new ReadOnlyCollection<string>(new[] { "=", ":" });
         private static readonly Regex DefaultAssignmentPattern = new Regex("(:|=)");
 
-        public CliLoadingSettings(IEnumerable<string> keySymbols, IEnumerable<string> assignmentSymbols)
+        public CliLoadingSettings(CliArgumentStyle argumentStyle, IEnumerable<string> keySymbols, IEnumerable<string> assignmentSymbols)
         {
+            ArgumentStyle = argumentStyle;
             KeySymbols = keySymbols == null ? DefaultKeySymbols
                             : Array.AsReadOnly(keySymbols.Distinct(StringComparer.InvariantCultureIgnoreCase).ToArray());
             KeyPattern = KeySymbols == DefaultKeySymbols ? DefaultKeyPattern
@@ -28,6 +29,8 @@ namespace Shipwreck.CommandLine
                             : new Regex("(" + string.Join("|", AssignmentSymbols.Select(Regex.Escape)) + ")");
         }
 
+        public CliArgumentStyle ArgumentStyle { get; }
+
         public ReadOnlyCollection<string> KeySymbols { get; }
 
         public Regex KeyPattern { get; }
@@ -36,7 +39,7 @@ namespace Shipwreck.CommandLine
 
         public Regex AssignmentPattern { get; }
 
-        public CliOptionLoader CreateLoader(CliTypeMetadata metadata, CliLoadingSettings settings, object target, IEnumerable<string> args) 
+        public CliOptionLoader CreateLoader(CliTypeMetadata metadata, CliLoadingSettings settings, object target, IEnumerable<string> args)
             => new CliOptionLoader(metadata, settings, target, args);
 
 

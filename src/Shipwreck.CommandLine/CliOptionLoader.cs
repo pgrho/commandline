@@ -83,6 +83,20 @@ namespace Shipwreck.CommandLine
 
         private void LoadCore()
         {
+            switch (Settings.ArgumentStyle)
+            {
+                case CliArgumentStyle.Combined:
+                    LoadCombined();
+                    break;
+                case CliArgumentStyle.Separated:
+                    LoadSeparated();
+                    break;
+                default:
+                    throw new NotSupportedException();
+            }
+        }
+        private void LoadCombined()
+        {
             for (var i = 0; i < Args.Count; i++)
             {
                 var a = Args[i];
@@ -113,6 +127,44 @@ namespace Shipwreck.CommandLine
                     LoadDefaultParameters(i);
                     return;
                 }
+            }
+        }
+
+        private void LoadSeparated()
+        {
+            string prevPath = null;
+            for (var i = 0; i < Args.Count; i++)
+            {
+                var a = Args[i];
+                var km = Settings.KeyPattern.Match(a);
+                var si = km.Success ? km.Index + km.Length : 0;
+                if (prevPath != null)
+                {
+                    if (km.Success)
+                    {
+                        LoadRootProperty(prevPath, null);
+                        prevPath = a.Substring(si);
+                    }
+                    else
+                    {
+                        LoadRootProperty(prevPath, a);
+                        prevPath = null;
+                    }
+                }
+                else if (km.Success)
+                {
+                    prevPath = a.Substring(si);
+                }
+                else
+                {
+                    LoadDefaultParameters(i);
+                    return;
+                }
+            }
+
+            if (prevPath != null)
+            {
+                LoadRootProperty(prevPath, null);
             }
         }
 

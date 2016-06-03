@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Shipwreck.CommandLine
 {
+    /// <summary>
+    /// プロパティが無名オプションとなりうるかどうかを指定します。
+    /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public class CliDefaultOptionAttribute : Attribute
     {
@@ -31,8 +34,14 @@ namespace Shipwreck.CommandLine
             Precedence = precedence;
         }
 
+        /// <summary>
+        /// プロパティが無名オプションとなりうるかどうかを示す値を取得します。
+        /// </summary>
         public virtual bool IsDefault { get; }
 
+        /// <summary>
+        /// 無名オプション内のプロパティの優先順位を取得します。
+        /// </summary>
         public virtual int Precedence { get; }
     }
 }

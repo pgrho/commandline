@@ -25,11 +25,12 @@ namespace Shipwreck.CommandLine
 
         private static CliTypeMetadata CreateMetadata(Type type)
         {
+            var style = type.GetCustomAttribute<CliArgumentStyleAttribute>()?.ArgumentStyle ?? CliArgumentStyle.Combined;
             var ks = type.GetCustomAttributes<CliKeySymbolAttribute>().Select(_ => _.Symbol).ToArray();
 
             var ass = type.GetCustomAttributes<CliAssignmentSymbolAttribute>().Select(_ => _.Symbol).ToArray();
 
-            var ds = new CliLoadingSettings(ks.Any() ? ks : null, ass.Any() ? ass : null);
+            var ds = new CliLoadingSettings(style, ks.Any() ? ks : null, ass.Any() ? ass : null);
 
             var ps = type.GetProperties().Select(_ => CliOptionMetadata.FromPropertyInfo(_)).OrderBy(_ => _.Order);
 

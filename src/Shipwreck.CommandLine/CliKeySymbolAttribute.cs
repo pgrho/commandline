@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace Shipwreck.CommandLine
 {
+    /// <summary>
+    /// クラスを読み込む際に使用するキーの接頭辞を指定します。
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public class CliKeySymbolAttribute : Attribute
     {
