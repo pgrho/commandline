@@ -9,11 +9,11 @@ namespace Shipwreck.CommandLine
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public class CliOrderAttribute : Attribute
     {
-        public CliOrderAttribute(int index)
+        public CliOrderAttribute(int order)
         {
-            Index = index;
+            Order = order;
         }
 
-        public virtual int Index { get; }
+        public virtual int Order { get; }
     }
 }

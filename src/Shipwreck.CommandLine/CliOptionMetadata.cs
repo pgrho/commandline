@@ -20,17 +20,17 @@ namespace Shipwreck.CommandLine
             Property = property;
             Converter = TypeDescriptor.GetProperties(Property.DeclaringType)[Property.Name].Converter;
             IsIgnored = true;
-            Index = -1;
+            Order = -1;
             Names = EmptyStrings;
             NamesPattern = NeverMatch;
         }
 
-        private CliOptionMetadata(PropertyInfo property, int index, ReadOnlyCollection<string> names, bool hasSwitchValue, object switchValue, bool isDefault, int precedence)
+        private CliOptionMetadata(PropertyInfo property, int order, ReadOnlyCollection<string> names, bool hasSwitchValue, object switchValue, bool isDefault, int precedence)
         {
             Property = property;
             Converter = TypeDescriptor.GetProperties(Property.DeclaringType)[Property.Name].Converter;
             IsIgnored = false;
-            Index = index;
+            Order = order;
             Names = names;
             NamesPattern = names == EmptyStrings ? NeverMatch
                                     : new Regex("(" + string.Join("|", names.Select(Regex.Escape)) + ")", RegexOptions.IgnoreCase);
@@ -46,7 +46,7 @@ namespace Shipwreck.CommandLine
 
         public bool IsIgnored { get; }
 
-        public int Index { get; }
+        public int Order { get; }
 
         public ReadOnlyCollection<string> Names { get; }
 
@@ -94,7 +94,7 @@ namespace Shipwreck.CommandLine
                 return new CliOptionMetadata(property);
             }
 
-            var index = property.GetCustomAttribute<CliOrderAttribute>()?.Index ?? -1;
+            var order = property.GetCustomAttribute<CliOrderAttribute>()?.Order ?? -1;
 
             ReadOnlyCollection<string> ns;
             var names = property.GetCustomAttributes<CliOptionAttribute>().Select(_ => _.Name).OrderBy(_ => _).Distinct(StringComparer.InvariantCultureIgnoreCase).ToArray();
@@ -120,7 +120,7 @@ namespace Shipwreck.CommandLine
 
             var defAttr = property.GetCustomAttribute<CliDefaultOptionAttribute>();
 
-            return new CliOptionMetadata(property, index, ns, switchAttr != null, switchAttr?.SwitchValue, defAttr?.IsDefault ?? false, defAttr?.Precedence ?? 0);
+            return new CliOptionMetadata(property, order, ns, switchAttr != null, switchAttr?.SwitchValue, defAttr?.IsDefault ?? false, defAttr?.Precedence ?? 0);
         }
     }
 }

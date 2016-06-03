@@ -31,7 +31,7 @@ namespace Shipwreck.CommandLine
 
             var ds = new CliLoadingSettings(ks.Any() ? ks : null, ass.Any() ? ass : null);
 
-            var ps = type.GetProperties().Select(_ => CliOptionMetadata.FromPropertyInfo(_)).OrderBy(_ => _.Index);
+            var ps = type.GetProperties().Select(_ => CliOptionMetadata.FromPropertyInfo(_)).OrderBy(_ => _.Order);
 
             return new CliTypeMetadata(ds, ps);
         }

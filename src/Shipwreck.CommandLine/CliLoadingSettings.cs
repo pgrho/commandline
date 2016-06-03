@@ -36,6 +36,10 @@ namespace Shipwreck.CommandLine
 
         public Regex AssignmentPattern { get; }
 
+        public CliOptionLoader CreateLoader(CliTypeMetadata metadata, CliLoadingSettings settings, object target, IEnumerable<string> args) 
+            => new CliOptionLoader(metadata, settings, target, args);
+
+
         // public bool HasIndependentValue { get; set; }
         //public Regex NewInstancePattern { get; set; }
 

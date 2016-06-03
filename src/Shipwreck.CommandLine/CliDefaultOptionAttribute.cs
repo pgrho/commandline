@@ -19,6 +19,12 @@ namespace Shipwreck.CommandLine
             IsDefault = isDefault;
         }
 
+        public CliDefaultOptionAttribute(int precedence)
+        {
+            IsDefault = true;
+            Precedence = precedence;
+        }
+
         public CliDefaultOptionAttribute(bool isDefault, int precedence)
         {
             IsDefault = isDefault;
