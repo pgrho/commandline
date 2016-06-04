@@ -19,6 +19,16 @@ namespace Shipwreck.CommandLine
             metadata.LoadCore(context);
         }
 
+        public static TResult Execute<TParameter, TResult>(this ICliCommand<TParameter, TResult> command, TParameter parameter, IEnumerable<string> args, TypeMetadata metadata = null, LoaderSettings settings = null)
+        {
+            metadata = metadata ?? TypeMetadata.FromType(command.GetType());
+            settings = settings ?? metadata.DefaultSettings;
+
+            var context = metadata.CreateContextForCurrentObject(metadata, settings, args, command);
+
+            return ExecuteCore<TParameter, TResult>(context, parameter);
+        }
+
         private static TResult ExecuteCore<TParameter, TResult>(LoadingContextBase context, TParameter parameter)
         {
             var metadata = (CommandMetadata)context.Metadata;
@@ -26,8 +36,7 @@ namespace Shipwreck.CommandLine
 
             if (f != null)
             {
-                // TODO:indexer
-                var cmd = metadata.Commands.FirstOrDefault(_ => _.NamesPattern.IsMatch(f));
+                var cmd = metadata.Commands.FindByName(f);
 
                 if (cmd != null)
                 {
@@ -39,16 +48,6 @@ namespace Shipwreck.CommandLine
 
             metadata.LoadCore(context);
             return (TResult)metadata.ExecuteCore(context, parameter);
-        }
-
-        public static TResult Execute<TParameter, TResult>(this ICliCommand<TParameter, TResult> command, TParameter parameter, IEnumerable<string> args, TypeMetadata metadata = null, LoaderSettings settings = null)
-        {
-            metadata = metadata ?? TypeMetadata.FromType(command.GetType());
-            settings = settings ?? metadata.DefaultSettings;
-
-            var context = metadata.CreateContextForCurrentObject(metadata, settings, args, command);
-
-            return ExecuteCore<TParameter, TResult>(context, parameter);
         }
     }
 }

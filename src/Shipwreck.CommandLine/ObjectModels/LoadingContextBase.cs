@@ -17,6 +17,7 @@ namespace Shipwreck.CommandLine.ObjectModels
             : this(null, metadata, settings, args)
         {
         }
+
         internal LoadingContextBase(LoadingContextBase parentContext, LoaderMetadata metadata, LoaderSettings settings, IEnumerable<string> args)
         {
             if (metadata == null)
@@ -47,6 +48,7 @@ namespace Shipwreck.CommandLine.ObjectModels
         public LoaderSettings Settings { get; }
 
         public IReadOnlyList<string> Args { get; }
+
         public int CurrentOrder { get; set; }
 
         public HashSet<CommandOptionMetadata> LoadedOptions

@@ -20,6 +20,9 @@ namespace Shipwreck.CommandLine.ObjectModels
             _Property = property;
         }
 
+        public override string FullName => $"{_Property.Property.DeclaringType.FullName}.{_Property.Property.Name}";
+
+
         public override CommandMetadataCollection Commands => _Property.TypeMetadata.Commands;
 
         internal override LoadingContextBase CreateContextForCurrentObject(TypeMetadata metadata, LoaderSettings settings, IEnumerable<string> args, object target)
@@ -28,7 +31,7 @@ namespace Shipwreck.CommandLine.ObjectModels
         internal override LoadingContextBase CreateContextForDeclaringObject(CommandMetadata metadata, LoaderSettings settings, IEnumerable<string> args, LoadingContextBase parentContext)
             => new ObjectLoadingContext(parentContext, metadata, settings, args, _Property.GetValue(((ObjectLoadingContext)parentContext).Target));
 
-        internal override IReadOnlyList<CommandOptionMetadata> GetOptions()
+        public override IReadOnlyList<CommandOptionMetadata> GetOptions()
             => _Property.TypeMetadata.Options;
 
         internal override object GetValue(LoadingContextBase context, CommandOptionMetadata metadata)

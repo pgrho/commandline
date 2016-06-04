@@ -20,6 +20,9 @@ namespace Shipwreck.CommandLine.ObjectModels
             Options = new PropertyMetadataCollection(type.GetProperties().Select(_ => new PropertyMetadata(_)).OrderBy(_ => _.Order).ToArray());
         }
 
+
+        public override string FullName => Type.FullName;
+
         public Type Type { get; }
 
         public LoaderSettings DefaultSettings { get; }
@@ -42,7 +45,7 @@ namespace Shipwreck.CommandLine.ObjectModels
             return r;
         }
 
-        internal override IReadOnlyList<CommandOptionMetadata> GetOptions()
+        public override IReadOnlyList<CommandOptionMetadata> GetOptions()
             => Options;
 
         internal override LoadingContextBase CreateContextForCurrentObject(TypeMetadata metadata, LoaderSettings settings, IEnumerable<string> args, object target)

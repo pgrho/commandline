@@ -36,6 +36,7 @@
   <ItemGroup>
     <Compile Include="Command.cs" />
     <Compile Include="CommandExtensions.cs" />
+    <Compile Include="CommandLineParsingException.cs" />
     <Compile Include="CommandsHost.cs" />
     <Compile Include="CommandAttribute.cs" />
     <Compile Include="IgnoreAttribute.cs" />

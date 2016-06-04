@@ -36,13 +36,15 @@ namespace Shipwreck.CommandLine.ObjectModels
             Parameters = new ParameterMetadataCollection(method.GetParameters().Select(_ => new ParameterMetadata(_)).ToArray());
         }
 
+        public override string FullName => $"{Method.DeclaringType.FullName}.{Method.Name}";
+
         public MethodInfo Method { get; }
 
         public override CommandMetadataCollection Commands => _Commands;
 
         public ParameterMetadataCollection Parameters { get; }
 
-        internal override IReadOnlyList<CommandOptionMetadata> GetOptions()
+        public override IReadOnlyList<CommandOptionMetadata> GetOptions()
             => Parameters;
 
         internal override LoadingContextBase CreateContextForCurrentObject(TypeMetadata metadata, LoaderSettings settings, IEnumerable<string> args, object target)
