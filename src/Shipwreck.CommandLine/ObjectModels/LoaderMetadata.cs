@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Shipwreck.CommandLine.ObjectModels
 {
-    public abstract class LoaderMetadata
+    public abstract class LoaderMetadata : ILoaderMetadata
     {
         public abstract string FullName { get; }
 
@@ -20,6 +20,9 @@ namespace Shipwreck.CommandLine.ObjectModels
         internal abstract object GetValue(LoadingContextBase context, CommandOptionMetadata metadata);
 
         internal abstract void SetValue(LoadingContextBase context, CommandOptionMetadata metadata, string value);
+
+        void ILoaderMetadata.LoadCore(LoadingContextBase context)
+            => LoadCore(context);
 
         internal void LoadCore(LoadingContextBase context)
         {

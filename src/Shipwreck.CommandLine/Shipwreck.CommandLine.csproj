@@ -41,6 +41,8 @@
     <Compile Include="CommandAttribute.cs" />
     <Compile Include="IgnoreAttribute.cs" />
     <Compile Include="MemberAttribute.cs" />
+    <Compile Include="ObjectModels\CommandTypeMetadata.cs" />
+    <Compile Include="ObjectModels\ILoaderMetadata.cs" />
     <Compile Include="OptionAttribute.cs" />
     <Compile Include="ObjectModels\CommandMetadata.cs" />
     <Compile Include="ObjectModels\CommandOptionMetadata.cs" />

@@ -5,11 +5,12 @@ using System.Linq;
 
 namespace Shipwreck.CommandLine.ObjectModels
 {
-    public class TestCliCommand : LoaderTestObject, ICliCommand<object, object>
+    public class TestCliCommand : LoaderTestObject, ICliCommand<int, int>
     {
-        public object Execute(object parameter)
-        {
-            throw new NotImplementedException();
-        }
+        object ICliCommand.Execute(object parameter)
+            => Execute((int)parameter);
+
+        public int Execute(int parameter)
+            => GetHashCode() + parameter;
     }
 }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Shipwreck.CommandLine.ObjectModels
 {
-    public abstract class CommandMetadata : LoaderMetadata, INamedMetadata
+    public abstract class CommandMetadata : LoaderMetadata, ICommandMetadata, INamedMetadata
     {
         internal CommandMetadata(MemberInfo member)
         {
@@ -41,6 +41,9 @@ namespace Shipwreck.CommandLine.ObjectModels
         public abstract CommandMetadataCollection Commands { get; }
 
         internal abstract LoadingContextBase CreateContextForDeclaringObject(CommandMetadata metadata, LoaderSettings settings, IEnumerable<string> args, LoadingContextBase parentContext);
+
+        object ICommandMetadata.ExecuteCore(LoadingContextBase context, object parameter)
+            => ExecuteCore(context, parameter);
 
         internal abstract object ExecuteCore(LoadingContextBase context, object parameter);
     }

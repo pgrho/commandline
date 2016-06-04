@@ -9,8 +9,8 @@ namespace Shipwreck.CommandLine
     public abstract class Command<TParameter, TResult> : ICliCommand<TParameter, TResult>
     {
         public abstract TResult Execute(TParameter parameter);
+
         object ICliCommand.Execute(object parameter)
             => Execute((TParameter)parameter);
-
     }
 }

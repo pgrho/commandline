@@ -31,7 +31,7 @@ namespace Shipwreck.CommandLine
 
         private static TResult ExecuteCore<TParameter, TResult>(LoadingContextBase context, TParameter parameter)
         {
-            var metadata = (CommandMetadata)context.Metadata;
+            var metadata = (ICommandMetadata)context.Metadata;
             var f = context.Args.FirstOrDefault();
 
             if (f != null)

@@ -121,7 +121,7 @@ namespace Shipwreck.CommandLine.ObjectModels
         public void SetPropertyTest_11_Separated_SwitchValue()
         {
             var instance = CreateInstance();
-            ExecuteCore(instance, null, "-C"); ;
+            ExecuteCore(instance, CreateSeparatedSettings(), "-C"); ;
             var target = GetTarget(instance);
             Assert.IsTrue(target.C);
         }

@@ -9,15 +9,25 @@ using System.Threading.Tasks;
 
 namespace Shipwreck.CommandLine.ObjectModels
 {
-    public sealed class TypeMetadata : LoaderMetadata
+    public class TypeMetadata : LoaderMetadata
     {
         private static readonly Dictionary<Type, TypeMetadata> _Instances = new Dictionary<Type, TypeMetadata>();
 
-        private TypeMetadata(Type type)
+        internal TypeMetadata(Type type)
         {
             Type = type;
             DefaultSettings = new LoaderSettings(type);
-            Options = new PropertyMetadataCollection(type.GetProperties().Select(_ => new PropertyMetadata(_)).OrderBy(_ => _.Order).ToArray());
+
+            var props = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            var pms = props.Select(_ => new PropertyMetadata(_)).OrderBy(_ => _.Order).ToDictionary(_ => _.Property);
+
+            var commandProps = props.Where(_ => _.GetCustomAttribute<CommandAttribute>() != null).ToArray();
+            var methods = type.GetMethods(BindingFlags.Public | BindingFlags.Instance).Where(_ => _.GetCustomAttribute<CommandAttribute>() != null);
+
+            var cms = commandProps.Select(_ => (CommandMetadata)new PropertyCommandMetadata(pms[_])).Concat(methods.Select(_ => new MethodCommandMetadata(_))).OrderBy(_ => _.Order).ToArray();
+
+            Commands = new CommandMetadataCollection(cms);
+            Options = new PropertyMetadataCollection(pms.Values.Where(_ => Array.IndexOf(commandProps, _.Property) < 0).ToArray());
         }
 
 
@@ -39,7 +49,8 @@ namespace Shipwreck.CommandLine.ObjectModels
             {
                 if (!_Instances.TryGetValue(type, out r))
                 {
-                    _Instances[type] = r = new TypeMetadata(type);
+                    _Instances[type] = r = typeof(ICliCommand).IsAssignableFrom(type) ? new CommandTypeMetadata(type)
+                                            : new TypeMetadata(type);
                 }
             }
             return r;
