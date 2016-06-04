@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 namespace Shipwreck.CommandLine
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    public class CliArgumentStyleAttribute : Attribute
+    public class ArgumentStyleAttribute : Attribute
     {
-        public CliArgumentStyleAttribute(CliArgumentStyle argumentStyle)
+        public ArgumentStyleAttribute(ArgumentStyle argumentStyle)
         {
             ArgumentStyle = argumentStyle;
         }
 
-        public virtual CliArgumentStyle ArgumentStyle { get; }
+        public virtual ArgumentStyle ArgumentStyle { get; }
     }
 }

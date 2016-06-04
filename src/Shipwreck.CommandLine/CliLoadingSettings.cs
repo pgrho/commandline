@@ -16,7 +16,12 @@ namespace Shipwreck.CommandLine
         private static readonly ReadOnlyCollection<string> DefaultAssignmentSymbols = new ReadOnlyCollection<string>(new[] { "=", ":" });
         private static readonly Regex DefaultAssignmentPattern = new Regex("(:|=)");
 
-        public CliLoadingSettings(CliArgumentStyle argumentStyle, IEnumerable<string> keySymbols, IEnumerable<string> assignmentSymbols)
+        public CliLoadingSettings(Type type)
+            : this(GetArgumentStyle(type), GetKeySymbols(type), GetAssignmentSymbols(type))
+        { }
+
+
+        public CliLoadingSettings(ArgumentStyle argumentStyle, IEnumerable<string> keySymbols, IEnumerable<string> assignmentSymbols)
         {
             ArgumentStyle = argumentStyle;
             KeySymbols = keySymbols == null ? DefaultKeySymbols
@@ -29,7 +34,7 @@ namespace Shipwreck.CommandLine
                             : new Regex("(" + string.Join("|", AssignmentSymbols.Select(Regex.Escape)) + ")");
         }
 
-        public CliArgumentStyle ArgumentStyle { get; }
+        public ArgumentStyle ArgumentStyle { get; }
 
         public ReadOnlyCollection<string> KeySymbols { get; }
 
@@ -39,10 +44,7 @@ namespace Shipwreck.CommandLine
 
         public Regex AssignmentPattern { get; }
 
-        public CliOptionLoader CreateLoader(CliTypeMetadata metadata, CliLoadingSettings settings, object target, IEnumerable<string> args)
-            => new CliOptionLoader(metadata, settings, target, args);
-
-
+   
         // public bool HasIndependentValue { get; set; }
         //public Regex NewInstancePattern { get; set; }
 
@@ -50,5 +52,19 @@ namespace Shipwreck.CommandLine
         //public Regex AddItemPattern { get; set; }
         //public Regex RemoveItemPattern { get; set; }
         //public Regex SetItemPattern { get; set; }
+
+        private static ArgumentStyle GetArgumentStyle(Type type)
+            => type.GetCustomAttribute<ArgumentStyleAttribute>()?.ArgumentStyle ?? ArgumentStyle.Combined;
+
+        private static IEnumerable<string> GetKeySymbols(Type type)
+        {
+            var ks = type.GetCustomAttributes<CliKeySymbolAttribute>().Select(_ => _.Symbol).ToArray();
+            return ks.Any() ? ks : null;
+        }
+        private static IEnumerable<string> GetAssignmentSymbols(Type type)
+        {
+            var ks = type.GetCustomAttributes<AssignmentSymbolAttribute>().Select(_ => _.Symbol).ToArray();
+            return ks.Any() ? ks : null;
+        }
     }
 }

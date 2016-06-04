@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Shipwreck.CommandLine
 {
-    public enum CliArgumentStyle
+    public enum ArgumentStyle
     {
         Combined,
         Separated

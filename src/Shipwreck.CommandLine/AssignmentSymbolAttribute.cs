@@ -13,9 +13,9 @@ namespace Shipwreck.CommandLine
     /// クラスを読み込む際に使用する代入記号を指定します。
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-    public class CliAssignmentSymbolAttribute : Attribute
+    public class AssignmentSymbolAttribute : Attribute
     {
-        public CliAssignmentSymbolAttribute(string symbol)
+        public AssignmentSymbolAttribute(string symbol)
         {
             Symbol = symbol;
         }
