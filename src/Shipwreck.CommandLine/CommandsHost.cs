@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Shipwreck.CommandLine
 {
-    public abstract class CommandHost<TParameter, TResult> : ICliCommandsHost<TParameter, TResult>
+    public abstract class CommandsHost<TParameter, TResult> : ICliCommandsHost<TParameter, TResult>
     {
         public abstract TResult Execute(TParameter parameter);
         object ICliCommand.Execute(object parameter)
