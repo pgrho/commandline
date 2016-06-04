@@ -16,11 +16,15 @@ namespace Shipwreck.CommandLine.ObjectModels
         {
             _NameStore = new MemberNameStore(member.Name, member, true);
 
-            var attr = member.GetCustomAttribute<CommandLineOptionAttribute>();
+            var attr = member.GetCustomAttribute<OptionAttribute>();
 
-            IsIgnored = member.GetCustomAttribute<CommandLineIgnoreAttribute>()?.IsIgnored
+            IsIgnored = member.GetCustomAttribute<IgnoreAttribute>()?.IsIgnored
                             ?? attr?.IsIgnored
                             ?? false;
+
+            Order = member.GetCustomAttribute<OptionOrderAttribute>()?.Order
+                    ?? attr?.Order
+                    ?? -1;
         }
 
         private readonly MemberNameStore _NameStore;
@@ -32,9 +36,11 @@ namespace Shipwreck.CommandLine.ObjectModels
         public Regex NamesPattern => _NameStore.NamesPattern;
         public bool IsIgnored { get; }
 
+        public int Order { get; }
+
         public abstract CommandMetadataCollection Commands { get; }
 
-        internal abstract LoadingContextBase CreateContextForDeclaringObject(CommandMetadata metadata, CliLoadingSettings settings, IEnumerable<string> args, LoadingContextBase parentContext);
+        internal abstract LoadingContextBase CreateContextForDeclaringObject(CommandMetadata metadata, LoaderSettings settings, IEnumerable<string> args, LoadingContextBase parentContext);
 
         internal abstract object ExecuteCore(LoadingContextBase context, object parameter);
     }

@@ -9,19 +9,19 @@ using System.Threading.Tasks;
 
 namespace Shipwreck.CommandLine
 {
-    public sealed class CliLoadingSettings
+    public sealed class LoaderSettings
     {
         private static readonly ReadOnlyCollection<string> DefaultKeySymbols = new ReadOnlyCollection<string>(new[] { "-", "--", "/" });
         private static readonly Regex DefaultKeyPattern = new Regex("^(--?|/)");
         private static readonly ReadOnlyCollection<string> DefaultAssignmentSymbols = new ReadOnlyCollection<string>(new[] { "=", ":" });
         private static readonly Regex DefaultAssignmentPattern = new Regex("(:|=)");
 
-        public CliLoadingSettings(Type type)
+        public LoaderSettings(Type type)
             : this(GetArgumentStyle(type), GetKeySymbols(type), GetAssignmentSymbols(type))
         { }
 
 
-        public CliLoadingSettings(ArgumentStyle argumentStyle, IEnumerable<string> keySymbols, IEnumerable<string> assignmentSymbols)
+        public LoaderSettings(ArgumentStyle argumentStyle, IEnumerable<string> keySymbols, IEnumerable<string> assignmentSymbols)
         {
             ArgumentStyle = argumentStyle;
             KeySymbols = keySymbols == null ? DefaultKeySymbols
@@ -58,7 +58,7 @@ namespace Shipwreck.CommandLine
 
         private static IEnumerable<string> GetKeySymbols(Type type)
         {
-            var ks = type.GetCustomAttributes<CliKeySymbolAttribute>().Select(_ => _.Symbol).ToArray();
+            var ks = type.GetCustomAttributes<KeySymbolAttribute>().Select(_ => _.Symbol).ToArray();
             return ks.Any() ? ks : null;
         }
         private static IEnumerable<string> GetAssignmentSymbols(Type type)

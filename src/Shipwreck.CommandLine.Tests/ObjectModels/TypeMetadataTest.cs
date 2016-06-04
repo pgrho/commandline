@@ -15,13 +15,13 @@ namespace Shipwreck.CommandLine.ObjectModels
             [CommandLineAliasAttribute("argb")]
             public int B { get; set; }
 
-            [CliSwitchValue(true)]
+            [SwitchValue(true)]
             public bool C { get; set; }
 
-            [CliDefaultOption(1)]
+            [AllowAnonymous(1)]
             public int Def1 { get; set; }
 
-            [CliDefaultOption]
+            [AllowAnonymous]
             public string Def2 { get; set; }
 
             public override object Execute(object parameter)

@@ -7,60 +7,60 @@ using System.Threading.Tasks;
 
 namespace Shipwreck.CommandLine
 {
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
-    public class CliSwitchValueAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter, AllowMultiple = false)]
+    public class SwitchValueAttribute : Attribute
     {
-        public CliSwitchValueAttribute(Type type, string switchValue)
+        public SwitchValueAttribute(Type type, string switchValue)
         {
             SwitchValue = TypeDescriptor.GetConverter(type).ConvertFromInvariantString(switchValue);
         }
 
-        public CliSwitchValueAttribute(bool switchValue)
+        public SwitchValueAttribute(bool switchValue)
         {
             SwitchValue = switchValue;
         }
 
-        public CliSwitchValueAttribute(byte switchValue)
+        public SwitchValueAttribute(byte switchValue)
         {
             SwitchValue = switchValue;
         }
 
-        public CliSwitchValueAttribute(short switchValue)
+        public SwitchValueAttribute(short switchValue)
         {
             SwitchValue = switchValue;
         }
 
-        public CliSwitchValueAttribute(int switchValue)
+        public SwitchValueAttribute(int switchValue)
         {
             SwitchValue = switchValue;
         }
 
-        public CliSwitchValueAttribute(long switchValue)
+        public SwitchValueAttribute(long switchValue)
         {
             SwitchValue = switchValue;
         }
 
-        public CliSwitchValueAttribute(float switchValue)
+        public SwitchValueAttribute(float switchValue)
         {
             SwitchValue = switchValue;
         }
 
-        public CliSwitchValueAttribute(double switchValue)
+        public SwitchValueAttribute(double switchValue)
         {
             SwitchValue = switchValue;
         }
 
-        public CliSwitchValueAttribute(char switchValue)
+        public SwitchValueAttribute(char switchValue)
         {
             SwitchValue = switchValue;
         }
 
-        public CliSwitchValueAttribute(string switchValue)
+        public SwitchValueAttribute(string switchValue)
         {
             SwitchValue = switchValue;
         }
 
-        public CliSwitchValueAttribute(object switchValue)
+        public SwitchValueAttribute(object switchValue)
         {
             SwitchValue = switchValue;
         }

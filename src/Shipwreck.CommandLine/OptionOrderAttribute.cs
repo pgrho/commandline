@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Shipwreck.CommandLine
 {
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
-    public class CliOrderAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Method | AttributeTargets.Parameter, AllowMultiple = false)]
+    public class OptionOrderAttribute : Attribute
     {
-        public CliOrderAttribute(int order)
+        public OptionOrderAttribute(int order)
         {
             Order = order;
         }

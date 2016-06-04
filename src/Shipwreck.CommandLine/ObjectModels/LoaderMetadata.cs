@@ -13,7 +13,7 @@ namespace Shipwreck.CommandLine.ObjectModels
     {
         internal abstract IReadOnlyList<CommandOptionMetadata> GetOptions();
 
-        internal abstract LoadingContextBase CreateContextForCurrentObject(TypeMetadata metadata, CliLoadingSettings settings, IEnumerable<string> args, object target);
+        internal abstract LoadingContextBase CreateContextForCurrentObject(TypeMetadata metadata, LoaderSettings settings, IEnumerable<string> args, object target);
 
         internal abstract object GetValue(LoadingContextBase context, CommandOptionMetadata metadata);
 
@@ -119,10 +119,10 @@ namespace Shipwreck.CommandLine.ObjectModels
             var rem = startIndex == 0 ? args : args.Skip(startIndex).ToArray();
 
             var ops = allOps.Where(_ => (context.CurrentOrder < 0 || _.Order >= context.CurrentOrder)
-                                                && _.IsDefault
+                                                && _.AllowAnonymous
                                                 && !context.LoadedOptions.Contains(_))
                                         .Select((_, i) => new { Metadata = _, Index = i })
-                                        .OrderBy(_ => _.Metadata.Precedence)
+                                        .OrderBy(_ => _.Metadata.AnonymousPrecedence)
                                         .Take(rem.Count)
                                         .OrderBy(_ => _.Index)
                                         .Select(_ => _.Metadata)

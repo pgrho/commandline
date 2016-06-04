@@ -13,15 +13,11 @@ namespace Shipwreck.CommandLine.ObjectModels
     public sealed class ParameterMetadata : CommandOptionMetadata
     {
         internal ParameterMetadata(ParameterInfo parameter)
-            : base(parameter.Name, parameter, TypeDescriptor.GetConverter(parameter.ParameterType))
+            : base(parameter.Name, parameter, parameter.ParameterType)
         {
             Parameter = parameter;
         }
 
         public ParameterInfo Parameter { get; }
-
-        public override Type Type
-            => Parameter.ParameterType;
-
     }
 }

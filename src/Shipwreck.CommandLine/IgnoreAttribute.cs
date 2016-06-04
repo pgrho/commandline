@@ -11,17 +11,17 @@ using System.Threading.Tasks;
 namespace Shipwreck.CommandLine
 {
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Method | AttributeTargets.Parameter, AllowMultiple = false)]
-    public class CommandLineIgnoreAttribute : Attribute
+    public class IgnoreAttribute : Attribute
     {
         /// <summary>
-        /// <see cref="CommandLineIgnoreAttribute" />クラスの新しいインスタンスを初期化します。
+        /// <see cref="IgnoreAttribute" />クラスの新しいインスタンスを初期化します。
         /// </summary>
-        public CommandLineIgnoreAttribute()
+        public IgnoreAttribute()
         {
             IsIgnored = true;
         }
 
-        public CommandLineIgnoreAttribute(bool isIgnored)
+        public IgnoreAttribute(bool isIgnored)
         {
             IsIgnored = isIgnored;
         }

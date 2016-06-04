@@ -17,7 +17,7 @@ namespace Shipwreck.CommandLine.ObjectModels
 
         public MemberNameStore(string memberName, ICustomAttributeProvider member, bool exactMatch)
         {
-            var memberAttr = member.GetCustomAttribute<CommandLineMemberAttribute>();
+            var memberAttr = member.GetCustomAttribute<MemberAttribute>();
             Name = memberAttr?.Name ?? memberName;
 
             if (string.IsNullOrEmpty(Name))

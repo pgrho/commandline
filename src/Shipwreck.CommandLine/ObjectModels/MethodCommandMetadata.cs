@@ -14,7 +14,7 @@ namespace Shipwreck.CommandLine.ObjectModels
     {
         private sealed class ExecutionContext : LoadingContextBase
         {
-            public ExecutionContext(LoadingContextBase parentContext, LoaderMetadata metadata, CliLoadingSettings settings, IEnumerable<string> args, object target, object[] parameters)
+            public ExecutionContext(LoadingContextBase parentContext, LoaderMetadata metadata, LoaderSettings settings, IEnumerable<string> args, object target, object[] parameters)
                 : base(parentContext, metadata, settings, args)
             {
                 Target = target;
@@ -45,12 +45,12 @@ namespace Shipwreck.CommandLine.ObjectModels
         internal override IReadOnlyList<CommandOptionMetadata> GetOptions()
             => Parameters;
 
-        internal override LoadingContextBase CreateContextForCurrentObject(TypeMetadata metadata, CliLoadingSettings settings, IEnumerable<string> args, object target)
+        internal override LoadingContextBase CreateContextForCurrentObject(TypeMetadata metadata, LoaderSettings settings, IEnumerable<string> args, object target)
         {
             throw new NotSupportedException();
         }
 
-        internal override LoadingContextBase CreateContextForDeclaringObject(CommandMetadata metadata, CliLoadingSettings settings, IEnumerable<string> args, LoadingContextBase parentContext)
+        internal override LoadingContextBase CreateContextForDeclaringObject(CommandMetadata metadata, LoaderSettings settings, IEnumerable<string> args, LoadingContextBase parentContext)
             => new ExecutionContext(parentContext, metadata, settings, args, ((ObjectLoadingContext)parentContext).Target, CreateDefaultParameters());
 
         internal override object GetValue(LoadingContextBase context, CommandOptionMetadata metadata)

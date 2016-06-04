@@ -13,15 +13,12 @@ namespace Shipwreck.CommandLine.ObjectModels
     public sealed class PropertyMetadata : CommandOptionMetadata
     {
         internal PropertyMetadata(PropertyInfo property)
-            : base(property.Name, property, TypeDescriptor.GetProperties(property.DeclaringType)[property.Name].Converter)
+            : base(property.Name, property, property.PropertyType)
         {
             Property = property;
         }
 
         public PropertyInfo Property { get; }
-
-        public override Type Type 
-            => Property.PropertyType;
 
         public object GetValue(object target) => Property.GetValue(target);
 

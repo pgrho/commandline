@@ -13,11 +13,11 @@ namespace Shipwreck.CommandLine.ObjectModels
     {
         private HashSet<CommandOptionMetadata> _LoadedOptions;
 
-        internal LoadingContextBase(LoaderMetadata metadata, CliLoadingSettings settings, IEnumerable<string> args)
+        internal LoadingContextBase(LoaderMetadata metadata, LoaderSettings settings, IEnumerable<string> args)
             : this(null, metadata, settings, args)
         {
         }
-        internal LoadingContextBase(LoadingContextBase parentContext, LoaderMetadata metadata, CliLoadingSettings settings, IEnumerable<string> args)
+        internal LoadingContextBase(LoadingContextBase parentContext, LoaderMetadata metadata, LoaderSettings settings, IEnumerable<string> args)
         {
             if (metadata == null)
             {
@@ -44,7 +44,7 @@ namespace Shipwreck.CommandLine.ObjectModels
 
         public LoaderMetadata Metadata { get; }
 
-        public CliLoadingSettings Settings { get; }
+        public LoaderSettings Settings { get; }
 
         public IReadOnlyList<string> Args { get; }
         public int CurrentOrder { get; set; }

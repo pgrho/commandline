@@ -9,7 +9,7 @@ namespace Shipwreck.CommandLine
 {
     public static class CommandExtensions
     {
-        public static void Load<TParameter, TResult>(this ICliCommand<TParameter, TResult> command, IEnumerable<string> args, TypeMetadata metadata = null, CliLoadingSettings settings = null)
+        public static void Load<TParameter, TResult>(this ICliCommand<TParameter, TResult> command, IEnumerable<string> args, TypeMetadata metadata = null, LoaderSettings settings = null)
         {
             metadata = metadata ?? TypeMetadata.FromType(command.GetType());
             settings = settings ?? metadata.DefaultSettings;
@@ -41,7 +41,7 @@ namespace Shipwreck.CommandLine
             return (TResult)metadata.ExecuteCore(context, parameter);
         }
 
-        public static TResult Execute<TParameter, TResult>(this ICliCommand<TParameter, TResult> command, TParameter parameter, IEnumerable<string> args, TypeMetadata metadata = null, CliLoadingSettings settings = null)
+        public static TResult Execute<TParameter, TResult>(this ICliCommand<TParameter, TResult> command, TParameter parameter, IEnumerable<string> args, TypeMetadata metadata = null, LoaderSettings settings = null)
         {
             metadata = metadata ?? TypeMetadata.FromType(command.GetType());
             settings = settings ?? metadata.DefaultSettings;

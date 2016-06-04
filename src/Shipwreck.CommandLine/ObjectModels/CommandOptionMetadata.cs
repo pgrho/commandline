@@ -10,37 +10,52 @@ using System.Threading.Tasks;
 
 namespace Shipwreck.CommandLine.ObjectModels
 {
-
     public abstract class CommandOptionMetadata : INamedMetadata
     {
         private readonly MemberNameStore _NameStore;
 
         private TypeMetadata _TypeMetadata;
 
-        internal CommandOptionMetadata(string memberName, ICustomAttributeProvider member, TypeConverter converter)
+        internal CommandOptionMetadata(string memberName, ICustomAttributeProvider member, Type memberType)
         {
-            Converter = converter;
-            var attr = member.GetCustomAttribute<CommandLineOptionAttribute>();
+            Type = memberType;
+            var convAttr = member.GetCustomAttribute<TypeConverterAttribute>();
+            if (convAttr == null)
+            {
+                Converter = TypeDescriptor.GetConverter(memberType);
+            }
+            else
+            {
+                Converter = (TypeConverter)Activator.CreateInstance(Type.GetType(convAttr.ConverterTypeName));
+            }
+            var attr = member.GetCustomAttribute<OptionAttribute>();
 
-            IsIgnored = member.GetCustomAttribute<CommandLineIgnoreAttribute>()?.IsIgnored ?? attr?.IsIgnored ?? false;
-            Order = member.GetCustomAttribute<CliOrderAttribute>()?.Order ?? -1;
+            IsIgnored = member.GetCustomAttribute<IgnoreAttribute>()?.IsIgnored ?? attr?.IsIgnored ?? false;
+
+            Order = member.GetCustomAttribute<OptionOrderAttribute>()?.Order
+                    ?? attr?.Order
+                    ?? -1;
 
             _NameStore = new MemberNameStore(memberName, member, false);
 
-            var switchAttr = member.GetCustomAttribute<CliSwitchValueAttribute>();
+            var switchAttr = member.GetCustomAttribute<SwitchValueAttribute>();
             if (switchAttr != null)
             {
                 HasSwitchValue = true;
                 SwitchValue = switchAttr.SwitchValue;
             }
 
-            var defAttr = member.GetCustomAttribute<CliDefaultOptionAttribute>();
+            var anonymousAttr = member.GetCustomAttribute<AllowAnonymousAttribute>();
 
-            IsDefault = defAttr?.IsDefault ?? false;
-            Precedence = defAttr?.Precedence ?? -1;
+            AllowAnonymous = anonymousAttr?.AllowAnonymous
+                                ?? attr?.AllowAnonymous
+                                ?? false;
+            AnonymousPrecedence = anonymousAttr?.AnonymousPrecedence
+                                ?? attr?.AnonymousPrecedence
+                                ?? -1;
         }
 
-        public abstract Type Type { get; }
+        public Type Type { get; }
 
         public TypeMetadata TypeMetadata
         {
@@ -68,9 +83,15 @@ namespace Shipwreck.CommandLine.ObjectModels
 
         public object SwitchValue { get; }
 
-        public bool IsDefault { get; }
+        /// <summary>
+        /// プロパティが無名オプションとなりうるかどうかを示す値を取得します。
+        /// </summary>
+        public bool AllowAnonymous { get; }
 
-        public int Precedence { get; }
+        /// <summary>
+        /// 無名オプション内のプロパティの優先順位を取得します。
+        /// </summary>
+        public int AnonymousPrecedence { get; }
 
         public object ConvertFrom(string value)
         {

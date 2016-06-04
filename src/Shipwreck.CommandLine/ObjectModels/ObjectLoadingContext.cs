@@ -11,12 +11,12 @@ namespace Shipwreck.CommandLine.ObjectModels
 {
     internal sealed class ObjectLoadingContext : LoadingContextBase
     {
-        public ObjectLoadingContext(LoaderMetadata metadata, CliLoadingSettings settings, IEnumerable<string> args, object target)
+        public ObjectLoadingContext(LoaderMetadata metadata, LoaderSettings settings, IEnumerable<string> args, object target)
             : base(metadata, settings, args)
         {
             Target = target;
         }
-        public ObjectLoadingContext(LoadingContextBase parentContext, LoaderMetadata metadata, CliLoadingSettings settings, IEnumerable<string> args, object target)
+        public ObjectLoadingContext(LoadingContextBase parentContext, LoaderMetadata metadata, LoaderSettings settings, IEnumerable<string> args, object target)
             : base(parentContext, metadata, settings, args)
         {
             Target = target;

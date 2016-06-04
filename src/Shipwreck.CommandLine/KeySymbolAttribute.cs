@@ -13,9 +13,9 @@ namespace Shipwreck.CommandLine
     /// クラスを読み込む際に使用するキーの接頭辞を指定します。
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-    public class CliKeySymbolAttribute : Attribute
+    public class KeySymbolAttribute : Attribute
     {
-        public CliKeySymbolAttribute(string symbol)
+        public KeySymbolAttribute(string symbol)
         {
             Symbol = symbol;
         }

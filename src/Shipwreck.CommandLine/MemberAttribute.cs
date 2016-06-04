@@ -10,8 +10,12 @@ using System.Threading.Tasks;
 
 namespace Shipwreck.CommandLine
 {
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Method, AllowMultiple = false)]
-    public class CommandLineCommandAttribute : CommandLineMemberAttribute
+    public abstract class MemberAttribute : Attribute
     {
+        public string Name { get; set; }
+
+        public bool IsIgnored { get; set; }
+
+        public int Order { get; set; }
     }
 }

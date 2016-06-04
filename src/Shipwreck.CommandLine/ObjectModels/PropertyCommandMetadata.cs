@@ -22,10 +22,10 @@ namespace Shipwreck.CommandLine.ObjectModels
 
         public override CommandMetadataCollection Commands => _Property.TypeMetadata.Commands;
 
-        internal override LoadingContextBase CreateContextForCurrentObject(TypeMetadata metadata, CliLoadingSettings settings, IEnumerable<string> args, object target)
+        internal override LoadingContextBase CreateContextForCurrentObject(TypeMetadata metadata, LoaderSettings settings, IEnumerable<string> args, object target)
             => new ObjectLoadingContext(metadata, settings, args, target);
 
-        internal override LoadingContextBase CreateContextForDeclaringObject(CommandMetadata metadata, CliLoadingSettings settings, IEnumerable<string> args, LoadingContextBase parentContext)
+        internal override LoadingContextBase CreateContextForDeclaringObject(CommandMetadata metadata, LoaderSettings settings, IEnumerable<string> args, LoadingContextBase parentContext)
             => new ObjectLoadingContext(parentContext, metadata, settings, args, _Property.GetValue(((ObjectLoadingContext)parentContext).Target));
 
         internal override IReadOnlyList<CommandOptionMetadata> GetOptions()

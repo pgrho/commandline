@@ -16,13 +16,13 @@ namespace Shipwreck.CommandLine.ObjectModels
         private TypeMetadata(Type type)
         {
             Type = type;
-            DefaultSettings = new CliLoadingSettings(type);
+            DefaultSettings = new LoaderSettings(type);
             Options = new PropertyMetadataCollection(type.GetProperties().Select(_ => new PropertyMetadata(_)).OrderBy(_ => _.Order).ToArray());
         }
 
         public Type Type { get; }
 
-        public CliLoadingSettings DefaultSettings { get; }
+        public LoaderSettings DefaultSettings { get; }
 
         // TODO:値の設定
         public CommandMetadataCollection Commands { get; }
@@ -45,7 +45,7 @@ namespace Shipwreck.CommandLine.ObjectModels
         internal override IReadOnlyList<CommandOptionMetadata> GetOptions()
             => Options;
 
-        internal override LoadingContextBase CreateContextForCurrentObject(TypeMetadata metadata, CliLoadingSettings settings, IEnumerable<string> args, object target)
+        internal override LoadingContextBase CreateContextForCurrentObject(TypeMetadata metadata, LoaderSettings settings, IEnumerable<string> args, object target)
              => new ObjectLoadingContext(metadata, settings, args, target);
 
         internal override object GetValue(LoadingContextBase context, CommandOptionMetadata metadata)
