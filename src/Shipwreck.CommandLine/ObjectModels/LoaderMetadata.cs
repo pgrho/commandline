@@ -1,3 +1,4 @@
+using Shipwreck.CommandLine.Markup;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -173,7 +174,7 @@ namespace Shipwreck.CommandLine.ObjectModels
             }
             catch (Exception ex)
             {
-                throw new CommandLineParsingException(string.Format("\"{0}\"オプションの値が無効です。", option.Name), ex)
+                throw new CommandLineParsingException(new HelpMarkup().Code(option.Name).Text("オプションの値が無効です。").Freeze(), ex)
                 {
                     Value = value
                 };
@@ -251,7 +252,7 @@ namespace Shipwreck.CommandLine.ObjectModels
                 }
                 catch (Exception ex)
                 {
-                    throw new CommandLineParsingException(string.Format("\"{0}\"オプションの値が無効です。", propertyPath), ex)
+                    throw new CommandLineParsingException(new HelpMarkup().Code(propertyPath).Text("オプションの値が無効です。").Freeze(), ex)
                     {
                         Option = propertyPath,
                         Value = value

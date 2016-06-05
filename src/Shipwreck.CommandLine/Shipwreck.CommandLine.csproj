@@ -39,6 +39,16 @@
     <Compile Include="CommandLineParsingException.cs" />
     <Compile Include="CommandsHost.cs" />
     <Compile Include="CommandAttribute.cs" />
+    <Compile Include="Markup\ConsoleHelpWriter.cs" />
+    <Compile Include="Markup\HelpEnterList.cs" />
+    <Compile Include="Markup\HelpExitList.cs" />
+    <Compile Include="Markup\HelpListBullet.cs" />
+    <Compile Include="Markup\HelpNewLine.cs" />
+    <Compile Include="Markup\HelpText.cs" />
+    <Compile Include="Markup\HelpCode.cs" />
+    <Compile Include="Markup\HelpMarkup.cs" />
+    <Compile Include="Markup\HelpTextElement.cs" />
+    <Compile Include="Markup\HelpWriter.cs" />
     <Compile Include="IgnoreAttribute.cs" />
     <Compile Include="MemberAttribute.cs" />
     <Compile Include="ObjectModels\CommandTypeMetadata.cs" />
@@ -74,6 +84,7 @@
     <Compile Include="ReflectionHelper.cs" />
     <Compile Include="ObjectModels\TypeMetadata.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Markup\TextWriterHelpWriter.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
