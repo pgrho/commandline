@@ -10,28 +10,28 @@ namespace Shipwreck.CommandLine
     public class CommandLineParsingException : Exception
     {
         public CommandLineParsingException(string message)
-            : this(new HelpMarkup().Text(message).Freeze())
+            : this(MarkupDocument.FromText(message))
         {
         }
 
-        public CommandLineParsingException(HelpMarkup markup)
+        public CommandLineParsingException(MarkupDocument markup)
             : base(null)
         {
             Markup = markup;
         }
 
         public CommandLineParsingException(string message, Exception innerException)
-            : this(new HelpMarkup().Text(message).Freeze(), innerException)
+            : this(MarkupDocument.FromText(message), innerException)
         {
         }
 
-        public CommandLineParsingException(HelpMarkup markup, Exception innerException)
+        public CommandLineParsingException(MarkupDocument markup, Exception innerException)
             : base(null, innerException)
         {
             Markup = markup;
         }
 
-        public HelpMarkup Markup { get; }
+        public MarkupDocument Markup { get; }
 
         public override string Message
             => Markup.ToString();

@@ -1,4 +1,5 @@
 using Shipwreck.CommandLine.Markup;
+using Shipwreck.CommandLine.Properties;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -174,7 +175,14 @@ namespace Shipwreck.CommandLine.ObjectModels
             }
             catch (Exception ex)
             {
-                throw new CommandLineParsingException(new HelpMarkup().Code(option.Name).Text("ƒIƒvƒVƒ‡ƒ“‚Ì’l‚ª–³Œø‚Å‚·B").Freeze(), ex)
+                var markup = MarkupDocument.Parse(
+                                string.Format(
+                                    SR.InvalidValueArg0ForOptionArg1Markup,
+                                    MarkupRun.Escape(value),
+                                    MarkupRun.Escape(option.Name)));
+                markup.Freeze();
+
+                throw new CommandLineParsingException(markup, ex)
                 {
                     Value = value
                 };
@@ -194,7 +202,7 @@ namespace Shipwreck.CommandLine.ObjectModels
             {
                 throw new CommandLineParsingException(
                         string.Format(
-                            "\"{0}\"‚É\"{1}\"‚ÉŠY“–‚·‚éƒIƒvƒVƒ‡ƒ“‚ª‘¶İ‚µ‚Ü‚¹‚ñB[{2}]‚Ì‚¢‚¸‚ê‚©‚ğw’è‚µ‚Ä‚­‚¾‚³‚¢B",
+                            "\"{0}\"ã«\"{1}\"ã«è©²å½“ã™ã‚‹ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãŒå­˜åœ¨ã—ã¾ã›ã‚“ã€‚[{2}]ã®ã„ãšã‚Œã‹ã‚’æŒ‡å®šã—ã¦ãã ã•ã„ã€‚",
                             context.Metadata.FullName,
                             paths[0],
                             string.Join(", ", context.Metadata.GetOptions().Where(_ => !_.IsIgnored).Select(_ => _.Name))))
@@ -208,7 +216,7 @@ namespace Shipwreck.CommandLine.ObjectModels
             {
                 throw new CommandLineParsingException(
                         string.Format(
-                            "\"{0}\"‚Ì\"{1}\"ƒIƒvƒVƒ‡ƒ“‚ğ‚±‚ÌˆÊ’u‚Åw’è‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB",
+                            "\"{0}\"ã®\"{1}\"ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’ã“ã®ä½ç½®ã§æŒ‡å®šã™ã‚‹ã“ã¨ã¯ã§ãã¾ã›ã‚“ã€‚",
                             context.Metadata.FullName,
                             paths[0]))
                 {
@@ -225,13 +233,13 @@ namespace Shipwreck.CommandLine.ObjectModels
             {
                 var v = metadata.GetValue(context, propertyMetadata);
 
-                // TODO:•¡‡ƒpƒX‚ªw’è‚³‚êA’l‚ªNULL‚¾‚Á‚½ê‡‚Ì“®ìİ’è
+                // TODO:è¤‡åˆãƒ‘ã‚¹ãŒæŒ‡å®šã•ã‚Œã€å€¤ãŒNULLã ã£ãŸå ´åˆã®å‹•ä½œè¨­å®š
 
                 if (v == null)
                 {
                     throw new CommandLineParsingException(
                             string.Format(
-                                "\"{0}\"‚Ì\"{1}\"‚©‚çn‚Ü‚é•¡‡ƒpƒX‚ªw’è‚³‚ê‚Ü‚µ‚½‚ªA\"{1}\"‚Ì’l‚Ínull‚Å‚·B",
+                                "\"{0}\"ã®\"{1}\"ã‹ã‚‰å§‹ã¾ã‚‹è¤‡åˆãƒ‘ã‚¹ãŒæŒ‡å®šã•ã‚Œã¾ã—ãŸãŒã€\"{1}\"ã®å€¤ã¯nullã§ã™ã€‚",
                                 context.Metadata.FullName,
                                 paths[0]))
                     {
@@ -252,7 +260,14 @@ namespace Shipwreck.CommandLine.ObjectModels
                 }
                 catch (Exception ex)
                 {
-                    throw new CommandLineParsingException(new HelpMarkup().Code(propertyPath).Text("ƒIƒvƒVƒ‡ƒ“‚Ì’l‚ª–³Œø‚Å‚·B").Freeze(), ex)
+                    var markup = MarkupDocument.Parse(
+                                    string.Format(
+                                        SR.InvalidValueArg0ForOptionArg1Markup,
+                                        MarkupRun.Escape(value),
+                                        MarkupRun.Escape(propertyPath)));
+                    markup.Freeze();
+
+                    throw new CommandLineParsingException(markup, ex)
                     {
                         Option = propertyPath,
                         Value = value
@@ -272,7 +287,7 @@ namespace Shipwreck.CommandLine.ObjectModels
             {
                 throw new CommandLineParsingException(
                         string.Format(
-                            "\"{0}\"‚É\"{1}\"‚ÉŠY“–‚·‚éƒIƒvƒVƒ‡ƒ“‚ª‘¶İ‚µ‚Ü‚¹‚ñB[{2}]‚Ì‚¢‚¸‚ê‚©‚ğw’è‚µ‚Ä‚­‚¾‚³‚¢B",
+                            "\"{0}\"ã«\"{1}\"ã«è©²å½“ã™ã‚‹ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãŒå­˜åœ¨ã—ã¾ã›ã‚“ã€‚[{2}]ã®ã„ãšã‚Œã‹ã‚’æŒ‡å®šã—ã¦ãã ã•ã„ã€‚",
                             metadata.FullName,
                             p,
                             string.Join(", ", metadata.GetOptions().Where(_ => !_.IsIgnored).Select(_ => _.Name))));
@@ -286,13 +301,13 @@ namespace Shipwreck.CommandLine.ObjectModels
             {
                 var v = p.GetValue(target);
 
-                // TODO:•¡‡ƒpƒX‚ªw’è‚³‚êA’l‚ªNULL‚¾‚Á‚½ê‡‚Ì“®ìİ’è
+                // TODO:è¤‡åˆãƒ‘ã‚¹ãŒæŒ‡å®šã•ã‚Œã€å€¤ãŒNULLã ã£ãŸå ´åˆã®å‹•ä½œè¨­å®š
 
                 if (v == null)
                 {
                     throw new CommandLineParsingException(
                             string.Format(
-                                "\"{0}\"‚Ì\"{1}\"‚©‚çn‚Ü‚é•¡‡ƒpƒX‚ªw’è‚³‚ê‚Ü‚µ‚½‚ªA\"{1}\"‚Ì’l‚Ínull‚Å‚·B",
+                                "\"{0}\"ã®\"{1}\"ã‹ã‚‰å§‹ã¾ã‚‹è¤‡åˆãƒ‘ã‚¹ãŒæŒ‡å®šã•ã‚Œã¾ã—ãŸãŒã€\"{1}\"ã®å€¤ã¯nullã§ã™ã€‚",
                                 target.GetType().FullName,
                                 p));
                 }

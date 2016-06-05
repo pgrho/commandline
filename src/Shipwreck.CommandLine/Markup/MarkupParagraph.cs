@@ -61,5 +61,28 @@ namespace Shipwreck.CommandLine.Markup
             r.AppendMarkupLine(markupLine);
             return r;
         }
+        public new MarkupParagraph Clone()
+            => (MarkupParagraph)base.Clone();
+
+        /// <inheritdoc />
+        protected override MarkupObject CreateInstanceCore()
+            => new MarkupParagraph();
+
+        /// <inheritdoc />
+        public override void CopyTo(MarkupObject other)
+        {
+            base.CopyTo(other);
+
+            var obs = ((MarkupParagraph)other).Inlines;
+            obs.Clear();
+
+            if (_Inlines != null)
+            {
+                foreach (var b in _Inlines)
+                {
+                    obs.Add(b.Clone());
+                }
+            }
+        }
     }
 }

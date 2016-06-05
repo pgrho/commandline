@@ -10,5 +10,8 @@ namespace Shipwreck.CommandLine.Markup
     public abstract class MarkupBlock : MarkupObject
     {
         public abstract void AppendMarkupLine(string markupLine);
+
+        public new MarkupBlock Clone()
+            => (MarkupBlock)base.Clone();
     }
 }

@@ -9,18 +9,18 @@ namespace Shipwreck.CommandLine
 {
     public abstract class CommandsHost<TParameter, TResult> : ICliCommandsHost<TParameter, TResult>
     {
-        private HelpWriter _HelpWriter;
+        private MarkupWriter _HelpWriter;
 
         public abstract TResult Execute(TParameter parameter);
 
         object ICliCommand.Execute(object parameter)
             => Execute((TParameter)parameter);
 
-        public HelpWriter HelpWriter
+        public MarkupWriter HelpWriter
         {
             get
             {
-                return _HelpWriter ?? (_HelpWriter = new ConsoleHelpWriter());
+                return _HelpWriter ?? (_HelpWriter = new ConsoleMarkupWriter());
             }
             set
             {

@@ -20,5 +20,12 @@ namespace Shipwreck.CommandLine.Markup
             : base(text)
         {
         }
+
+        public new MarkupRun Clone()
+            => (MarkupRun)base.Clone();
+
+        /// <inheritdoc />
+        protected override MarkupObject CreateInstanceCore()
+            => new MarkupRun();
     }
 }

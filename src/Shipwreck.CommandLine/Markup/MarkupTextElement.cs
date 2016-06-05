@@ -75,5 +75,12 @@ namespace Shipwreck.CommandLine.Markup
                 writer.Write(c);
             }
         }
+        /// <inheritdoc />
+        public override void CopyTo(MarkupObject other)
+        {
+            base.CopyTo(other);
+
+            ((MarkupTextElement)other).Text = _Text;
+        }
     }
 }

@@ -11,5 +11,12 @@ namespace Shipwreck.CommandLine.Markup
     {
         protected override void OnFreeze()
         { }
+
+        public new MarkupLineBreak Clone()
+            => (MarkupLineBreak)base.Clone();
+
+        /// <inheritdoc />
+        protected override MarkupObject CreateInstanceCore()
+            => new MarkupLineBreak();
     }
 }

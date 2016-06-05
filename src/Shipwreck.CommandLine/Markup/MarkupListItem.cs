@@ -9,5 +9,11 @@ namespace Shipwreck.CommandLine.Markup
 {
     public sealed class MarkupListItem : MarkupParagraph
     {
+        public new MarkupListItem Clone()
+            => (MarkupListItem)base.Clone();
+
+        /// <inheritdoc />
+        protected override MarkupObject CreateInstanceCore()
+            => new MarkupListItem();
     }
 }

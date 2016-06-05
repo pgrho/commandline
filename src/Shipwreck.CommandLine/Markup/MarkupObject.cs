@@ -58,11 +58,21 @@ namespace Shipwreck.CommandLine.Markup
             switch (@char)
             {
                 case '\\':
-                case '[':
-                case ']':
+                case '`':
                     return true;
             }
             return false;
         }
+
+        public MarkupObject Clone()
+        {
+            var other = CreateInstanceCore();
+            CopyTo(other);
+            return other;
+        }
+
+        protected abstract MarkupObject CreateInstanceCore();
+
+        public virtual void CopyTo(MarkupObject other) { }
     }
 }

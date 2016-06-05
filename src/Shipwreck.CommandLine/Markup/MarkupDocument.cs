@@ -42,6 +42,15 @@ namespace Shipwreck.CommandLine.Markup
             Blocks.Freeze();
         }
 
+        public static MarkupDocument FromText(string text)
+        {
+            var md = new MarkupDocument();
+            var p = new MarkupParagraph();
+            p.Inlines.Add(new MarkupRun(text));
+            md.Blocks.Add(p);
+
+            return md;
+        }
 
         public static MarkupDocument Parse(string markup)
         {
@@ -66,6 +75,39 @@ namespace Shipwreck.CommandLine.Markup
                     {
                         bl.AppendMarkupLine(l);
                     }
+                }
+            }
+        }
+
+        public override string ToString()
+        {
+            using (var swmw = new StringWriterMarkupWriter())
+            {
+                swmw.Write(this);
+                swmw.Flush();
+                return swmw.ToString();
+            }
+        }
+        public new MarkupDocument Clone()
+            => (MarkupDocument)base.Clone();
+
+        /// <inheritdoc />
+        protected override MarkupObject CreateInstanceCore()
+            => new MarkupDocument();
+
+        /// <inheritdoc />
+        public override void CopyTo(MarkupObject other)
+        {
+            base.CopyTo(other);
+
+            var obs = ((MarkupDocument)other).Blocks;
+            obs.Clear();
+
+            if (_Blocks != null)
+            {
+                foreach (var b in _Blocks)
+                {
+                    obs.Add(b.Clone());
                 }
             }
         }
