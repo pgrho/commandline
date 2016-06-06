@@ -15,26 +15,37 @@ namespace Shipwreck.CommandLine.Markup
         {
             var markup = @"a\\b\`c`d\\e\`f`\g
 h`i`";
-            var inlines = MarkupInline.ParseInlines(markup).ToArray();
 
-            Assert.AreEqual(6, inlines.Length);
+            MarkupAssert.AreEqual(new MarkupObject[]
+            {
+                new MarkupRun(@"a\b`c"),
+                new MarkupInlineCode(@"d\e`f"),
+                new MarkupRun("g"),
+                new MarkupLineBreak(),
+                new MarkupRun("h"),
+                new MarkupInlineCode("i"),
+            }, MarkupInline.ParseInlines(markup));
 
-            Assert.IsInstanceOfType(inlines[0], typeof(MarkupRun));
-            Assert.AreEqual(@"a\b`c", ((MarkupRun)inlines[0]).Text);
+            //var inlines = MarkupInline.ParseInlines(markup).ToArray();
 
-            Assert.IsInstanceOfType(inlines[1], typeof(MarkupInlineCode));
-            Assert.AreEqual(@"d\e`f", ((MarkupInlineCode)inlines[1]).Text);
+            //Assert.AreEqual(6, inlines.Length);
 
-            Assert.IsInstanceOfType(inlines[2], typeof(MarkupRun));
-            Assert.AreEqual(@"g", ((MarkupRun)inlines[2]).Text);
+            //Assert.IsInstanceOfType(inlines[0], typeof(MarkupRun));
+            //Assert.AreEqual(@"a\b`c", ((MarkupRun)inlines[0]).Text);
 
-            Assert.IsInstanceOfType(inlines[3], typeof(MarkupLineBreak));
+            //Assert.IsInstanceOfType(inlines[1], typeof(MarkupInlineCode));
+            //Assert.AreEqual(@"d\e`f", ((MarkupInlineCode)inlines[1]).Text);
 
-            Assert.IsInstanceOfType(inlines[4], typeof(MarkupRun));
-            Assert.AreEqual(@"h", ((MarkupRun)inlines[4]).Text);
+            //Assert.IsInstanceOfType(inlines[2], typeof(MarkupRun));
+            //Assert.AreEqual(@"g", ((MarkupRun)inlines[2]).Text);
 
-            Assert.IsInstanceOfType(inlines[5], typeof(MarkupInlineCode));
-            Assert.AreEqual(@"i", ((MarkupInlineCode)inlines[5]).Text);
+            //Assert.IsInstanceOfType(inlines[3], typeof(MarkupLineBreak));
+
+            //Assert.IsInstanceOfType(inlines[4], typeof(MarkupRun));
+            //Assert.AreEqual(@"h", ((MarkupRun)inlines[4]).Text);
+
+            //Assert.IsInstanceOfType(inlines[5], typeof(MarkupInlineCode));
+            //Assert.AreEqual(@"i", ((MarkupInlineCode)inlines[5]).Text);
         }
     }
 }

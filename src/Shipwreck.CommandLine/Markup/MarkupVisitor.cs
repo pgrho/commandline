@@ -10,6 +10,23 @@ namespace Shipwreck.CommandLine.Markup
 {
     public abstract class MarkupVisitor : IDisposable
     {
+        public void Visit(MarkupObject obj)
+        {
+            var i = obj as MarkupInline;
+            if (i != null)
+            {
+                VisitInline(i);
+                return;
+            }
+            var b = obj as MarkupBlock;
+            if (b != null)
+            {
+                VisitBlock(b);
+                return;
+            }
+            Visit((MarkupDocument)obj);
+        }
+
         public virtual void Visit(MarkupDocument document)
         {
             foreach (var b in document.Blocks)
@@ -18,16 +35,16 @@ namespace Shipwreck.CommandLine.Markup
             }
         }
 
-        protected virtual void VisitBlock(MarkupBlock b)
+        protected virtual void VisitBlock(MarkupBlock block)
         {
-            var l = b as MarkupList;
+            var l = block as MarkupList;
             if (l != null)
             {
                 VisitList(l);
                 return;
             }
 
-            VisitParagraph((MarkupParagraph)b);
+            VisitParagraph((MarkupParagraph)block);
         }
 
         protected virtual void VisitList(MarkupList list)
@@ -66,6 +83,23 @@ namespace Shipwreck.CommandLine.Markup
                 }
                 VisitRun((MarkupRun)i);
             }
+        }
+
+        protected virtual void VisitInline(MarkupInline inline)
+        {
+            var lineBreak = inline as MarkupLineBreak;
+            if (lineBreak != null)
+            {
+                VisitLineBreak(lineBreak);
+                return;
+            }
+            var code = inline as MarkupInlineCode;
+            if (code != null)
+            {
+                VisitInlineCode(code);
+                return;
+            }
+            VisitRun((MarkupRun)inline);
         }
 
         protected virtual void VisitRun(MarkupRun run) { }

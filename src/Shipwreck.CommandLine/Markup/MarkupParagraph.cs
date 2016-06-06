@@ -84,5 +84,8 @@ namespace Shipwreck.CommandLine.Markup
                 }
             }
         }
+
+        public override IReadOnlyList<MarkupObject> GetChildren()
+            => Inlines;
     }
 }

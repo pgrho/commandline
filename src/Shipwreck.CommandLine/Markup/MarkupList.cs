@@ -71,7 +71,7 @@ namespace Shipwreck.CommandLine.Markup
             }
             else
             {
-                Items.Last().AppendMarkupLine(markupLine);
+                Items.Last().AppendMarkupLine(markupLine.TrimStart());
             }
         }
         public new MarkupList Clone()
@@ -97,5 +97,7 @@ namespace Shipwreck.CommandLine.Markup
                 }
             }
         }
+        public override IReadOnlyList<MarkupObject> GetChildren()
+            => Items;
     }
 }

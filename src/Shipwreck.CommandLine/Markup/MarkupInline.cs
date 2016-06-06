@@ -9,6 +9,7 @@ namespace Shipwreck.CommandLine.Markup
 {
     public abstract class MarkupInline : MarkupObject
     {
+
         private enum InlineType
         {
             Run,
@@ -111,5 +112,8 @@ namespace Shipwreck.CommandLine.Markup
             }
             throw new NotImplementedException();
         }
+
+        public override IReadOnlyList<MarkupObject> GetChildren()
+            => EmptyObjects;
     }
 }

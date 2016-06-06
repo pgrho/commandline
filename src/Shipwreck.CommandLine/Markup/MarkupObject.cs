@@ -9,6 +9,7 @@ namespace Shipwreck.CommandLine.Markup
 {
     public abstract class MarkupObject
     {
+        internal static readonly MarkupObject[] EmptyObjects = new MarkupObject[0];
         private bool _IsFreezed;
 
         /// <summary>
@@ -74,5 +75,7 @@ namespace Shipwreck.CommandLine.Markup
         protected abstract MarkupObject CreateInstanceCore();
 
         public virtual void CopyTo(MarkupObject other) { }
+
+        public abstract IReadOnlyList<MarkupObject> GetChildren();
     }
 }

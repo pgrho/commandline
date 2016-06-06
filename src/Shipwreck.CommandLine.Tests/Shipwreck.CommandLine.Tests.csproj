@@ -50,6 +50,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Markup\MarkupAssert.cs" />
+    <Compile Include="Markup\MarkupDocumentTest.cs" />
     <Compile Include="Markup\MarkupInlineTest.cs" />
     <Compile Include="ObjectModels\CommandExecuteTest.cs" />
     <Compile Include="ObjectModels\LoaderTest.cs" />
