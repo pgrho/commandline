@@ -15,9 +15,8 @@ namespace Shipwreck.CommandLine.ObjectModels
         internal ParameterMetadata(ParameterInfo parameter)
             : base(parameter.Name, parameter, parameter.ParameterType)
         {
-            Parameter = parameter;
         }
 
-        public ParameterInfo Parameter { get; }
+        public ParameterInfo Parameter => (ParameterInfo)Member;
     }
 }

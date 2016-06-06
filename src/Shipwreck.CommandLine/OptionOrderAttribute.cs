@@ -14,6 +14,9 @@ namespace Shipwreck.CommandLine
             Order = order;
         }
 
+        /// <summary>
+        /// メンバーの処理順を取得します。
+        /// </summary>
         public virtual int Order { get; }
     }
 }

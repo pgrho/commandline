@@ -60,9 +60,9 @@
     <Compile Include="Markup\StringMarkupWriter.cs" />
     <Compile Include="Markup\MarkupWriter.cs" />
     <Compile Include="MemberAttribute.cs" />
-    <Compile Include="ObjectModels\CommandTypeMetadata.cs" />
     <Compile Include="ObjectModels\ICommandMetadata.cs" />
     <Compile Include="ObjectModels\ILoaderMetadata.cs" />
+    <Compile Include="ObjectModels\RH.cs" />
     <Compile Include="OptionAttribute.cs" />
     <Compile Include="ObjectModels\CommandMetadata.cs" />
     <Compile Include="ObjectModels\CommandOptionMetadata.cs" />

@@ -26,6 +26,9 @@ namespace Shipwreck.CommandLine
             IsIgnored = isIgnored;
         }
 
+        /// <summary>
+        /// メンバーが無視されるかどうかを示す値を取得します。
+        /// </summary>
         public bool IsIgnored { get; set; }
     }
 }

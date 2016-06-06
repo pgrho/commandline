@@ -17,6 +17,7 @@ namespace Shipwreck.CommandLine.ObjectModels
 
         public MemberNameStore(string memberName, ICustomAttributeProvider member, bool exactMatch)
         {
+            Member = member;
             var memberAttr = member.GetCustomAttribute<MemberAttribute>();
             Name = memberAttr?.Name ?? memberName;
 
@@ -39,6 +40,8 @@ namespace Shipwreck.CommandLine.ObjectModels
                     RegexOptions.IgnoreCase);
             }
         }
+
+        public ICustomAttributeProvider Member { get; }
 
         public string Name { get; }
 

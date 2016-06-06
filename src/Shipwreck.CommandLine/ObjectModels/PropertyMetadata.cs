@@ -15,10 +15,9 @@ namespace Shipwreck.CommandLine.ObjectModels
         internal PropertyMetadata(PropertyInfo property)
             : base(property.Name, property, property.PropertyType)
         {
-            Property = property;
         }
 
-        public PropertyInfo Property { get; }
+        public PropertyInfo Property => (PropertyInfo)Member;
 
         public object GetValue(object target) => Property.GetValue(target);
 

@@ -14,8 +14,18 @@ namespace Shipwreck.CommandLine
     {
         public string Name { get; set; }
 
+        public string Description { get; set; }
+
+        public Type DescriptionResourceType { get; set; }
+
+        /// <summary>
+        /// メンバーが無視されるかどうかを示す値を取得または設定します。
+        /// </summary>
         public bool IsIgnored { get; set; }
 
+        /// <summary>
+        /// メンバーの処理順を取得または設定します。
+        /// </summary>
         public int Order { get; set; }
     }
 }

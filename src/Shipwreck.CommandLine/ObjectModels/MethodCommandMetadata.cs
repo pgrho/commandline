@@ -28,21 +28,28 @@ namespace Shipwreck.CommandLine.ObjectModels
 
         private static readonly CommandMetadataCollection _Commands = new CommandMetadataCollection(new CommandMetadata[0]);
 
+        private ParameterMetadataCollection _Parameters;
+
         internal MethodCommandMetadata(MethodInfo method)
             : base(method)
-        {
-            Method = method;
+        { 
+        }
 
-            Parameters = new ParameterMetadataCollection(method.GetParameters().Select(_ => new ParameterMetadata(_)).ToArray());
+        protected override void LoadCore()
+        {
+            base.LoadCore();
+
+            _Parameters = new ParameterMetadataCollection(Method.GetParameters().Select(_ => new ParameterMetadata(_)).ToArray());
         }
 
         public override string FullName => $"{Method.DeclaringType.FullName}.{Method.Name}";
 
-        public MethodInfo Method { get; }
+        public MethodInfo Method => (MethodInfo)Member;
 
         public override CommandMetadataCollection Commands => _Commands;
 
-        public ParameterMetadataCollection Parameters { get; }
+        public ParameterMetadataCollection Parameters 
+            => ((MethodCommandMetadata)EnsureLoaded())._Parameters;
 
         public override IReadOnlyList<CommandOptionMetadata> GetOptions()
             => Parameters;
