@@ -45,9 +45,8 @@ namespace Shipwreck.CommandLine.Markup
         public static MarkupDocument FromText(string text, bool freeze = false)
         {
             var md = new MarkupDocument();
-            var p = new MarkupParagraph();
-            p.Inlines.Add(new MarkupRun(text));
-            md.Blocks.Add(p);
+
+            md.Blocks.Add(MarkupParagraph.FromText(text, freeze: false));
 
             if (freeze)
             {

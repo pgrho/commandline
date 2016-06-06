@@ -1,3 +1,4 @@
+using Shipwreck.CommandLine.Markup;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,23 +11,9 @@ using System.Threading.Tasks;
 
 namespace Shipwreck.CommandLine.ObjectModels
 {
-    public abstract class CommandOptionMetadata : INamedMetadata
+    public abstract class CommandOptionMetadata : MetadataBase, INamedMetadata
     {
         private readonly MemberNameStore _NameStore;
-
-        #region 遅延読み込み状態
-
-        /// <summary>
-        /// <see cref="_IsLoaded" />のロックです。
-        /// </summary>
-        private readonly object _LoadingLock;
-
-        /// <summary>
-        /// <see cref="LoadCore" />が実行されたかどうかを示す値です。
-        /// </summary>
-        private bool _IsLoaded;
-
-        #endregion Load
 
         #region 遅延読み込みプロパティ
 
@@ -50,14 +37,17 @@ namespace Shipwreck.CommandLine.ObjectModels
 
         private int _AnonymousPrecedence;
 
+        /// <summary>
+        /// <see cref="Description" />のバッキングストアです。
+        /// </summary>
+        private MarkupParagraph _Description;
+
         #endregion 遅延読み込みプロパティ
 
         internal CommandOptionMetadata(string memberName, ICustomAttributeProvider member, Type memberType)
         {
             Type = memberType;
             _NameStore = new MemberNameStore(memberName, member, false);
-
-            _LoadingLock = new object();
         }
 
         public Type Type { get; }
@@ -108,34 +98,22 @@ namespace Shipwreck.CommandLine.ObjectModels
         public int AnonymousPrecedence
             => EnsureLoaded()._AnonymousPrecedence;
 
+        /// <summary>
+        /// メンバーを表すマークアップを取得または設定します。
+        /// </summary>
+        public MarkupParagraph Description
+            => EnsureLoaded()._Description;
+
         #endregion 遅延読み込みプロパティ
 
         #region Load
 
-        /// <summary>
-        /// 必要であればメタデータを読み込みます。
-        /// </summary>
-        /// <returns>現在のインスタンス。</returns>
-        protected CommandOptionMetadata EnsureLoaded()
-        {
-            lock (_LoadingLock)
-            {
-                if (_IsLoaded)
-                {
-                    return this;
-                }
+        /// <inheritdoc />
+        protected new CommandOptionMetadata EnsureLoaded()
+            => (CommandOptionMetadata)base.EnsureLoaded();
 
-                LoadCore();
-
-                _IsLoaded = true;
-            }
-            return this;
-        }
-
-        /// <summary>
-        /// 読み込み処理を実行します。
-        /// </summary>
-        protected virtual void LoadCore()
+        /// <inheritdoc />
+        protected override void LoadCore()
         {
             _TypeMetadata = TypeMetadata.FromType(Type);
 
@@ -174,9 +152,14 @@ namespace Shipwreck.CommandLine.ObjectModels
             _AnonymousPrecedence = anonymousAttr?.AnonymousPrecedence
                                 ?? attr?.AnonymousPrecedence
                                 ?? -1;
+
+            _Description = Member.GetCustomAttribute<DescriptionMarkupAttribute>().Parse()
+                            ?? MH.Parse(attr?.Description, attr?.DescriptionResourceType)
+                            ?? Member.GetCustomAttribute<DescriptionAttribute>()?.Description.ToParagraph();
+            // TODO:summaryを検索する
         }
 
-        #endregion
+        #endregion Load
 
         public object ConvertFrom(string value)
         {

@@ -50,14 +50,22 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ObjectModels\Expectations.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Expectations.resx</DependentUpon>
+    </Compile>
     <Compile Include="Markup\MarkupAssert.cs" />
     <Compile Include="Markup\MarkupDocumentTest.cs" />
     <Compile Include="Markup\MarkupInlineTest.cs" />
+    <Compile Include="ObjectModels\PropertyMetadataTest.cs" />
+    <Compile Include="ObjectModels\ParameterMetadataTest.cs" />
     <Compile Include="ObjectModels\CommandExecuteTest.cs" />
     <Compile Include="ObjectModels\LoaderTest.cs" />
     <Compile Include="ObjectModels\LoaderTestObject.cs" />
     <Compile Include="ObjectModels\TestCliCommand.cs" />
     <Compile Include="ObjectModels\CommandLoadTest.cs" />
+    <Compile Include="ObjectModels\TH.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -66,7 +74,12 @@
       <Name>Shipwreck.CommandLine</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="ObjectModels\Expectations.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Expectations.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

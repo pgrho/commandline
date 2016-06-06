@@ -1,6 +1,8 @@
+using Shipwreck.CommandLine.Markup;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -14,41 +16,29 @@ namespace Shipwreck.CommandLine.ObjectModels
     {
         private readonly MemberNameStore _NameStore;
 
-        #region 遅延読み込み状態
+        #region 驕・ｻｶ隱ｭ縺ｿ霎ｼ縺ｿ繝励Ο繝代ユ繧｣
 
         /// <summary>
-        /// <see cref="_IsLoaded" />のロックです。
-        /// </summary>
-        private readonly object _LoadingLock;
-
-        /// <summary>
-        /// <see cref="LoadCore" />が実行されたかどうかを示す値です。
-        /// </summary>
-        private bool _IsLoaded;
-
-        #endregion Load
-
-        #region 遅延読み込みプロパティ
-
-        /// <summary>
-        /// <see cref="IsIgnored" />のバッキングストアです。
+        /// <see cref="IsIgnored" />縺ｮ繝舌ャ繧ｭ繝ｳ繧ｰ繧ｹ繝医い縺ｧ縺吶・
         /// </summary>
         private bool _IsIgnored;
 
         /// <summary>
-        /// <see cref="Order" />のバッキングストアです。
+        /// <see cref="Order" />縺ｮ繝舌ャ繧ｭ繝ｳ繧ｰ繧ｹ繝医い縺ｧ縺吶・
         /// </summary>
         private int _Order;
 
-        #endregion
+        /// <summary>
+        /// <see cref="Description" />縺ｮ繝舌ャ繧ｭ繝ｳ繧ｰ繧ｹ繝医い縺ｧ縺吶・
+        /// </summary>
+        private MarkupParagraph _Description;
+
+        #endregion 驕・ｻｶ隱ｭ縺ｿ霎ｼ縺ｿ繝励Ο繝代ユ繧｣
 
         internal CommandMetadata(MemberInfo member)
         {
             _NameStore = new MemberNameStore(member.Name, member, true);
-
-            _LoadingLock = new object();
         }
-
 
         public string Name => _NameStore.Name;
 
@@ -56,35 +46,16 @@ namespace Shipwreck.CommandLine.ObjectModels
 
         public Regex NamesPattern => _NameStore.NamesPattern;
 
-
         protected MemberInfo Member => (MemberInfo)_NameStore.Member;
 
         #region Load
 
-        /// <summary>
-        /// 必要であればメタデータを読み込みます。
-        /// </summary>
-        /// <returns>現在のインスタンス。</returns>
-        protected CommandMetadata EnsureLoaded()
-        {
-            lock (_LoadingLock)
-            {
-                if (_IsLoaded)
-                {
-                    return this;
-                }
+        /// <inheritdoc />
+        protected new CommandMetadata EnsureLoaded()
+            => (CommandMetadata)base.EnsureLoaded();
 
-                LoadCore();
-
-                _IsLoaded = true;
-            }
-            return this;
-        }
-
-        /// <summary>
-        /// 読み込み処理を実行します。
-        /// </summary>
-        protected virtual void LoadCore()
+        /// <inheritdoc />
+        protected override void LoadCore()
         {
             var attr = Member.GetCustomAttribute<OptionAttribute>();
 
@@ -95,25 +66,36 @@ namespace Shipwreck.CommandLine.ObjectModels
             _Order = Member.GetCustomAttribute<OptionOrderAttribute>()?.Order
                     ?? attr?.Order
                     ?? -1;
+
+            _Description = Member.GetCustomAttribute<DescriptionMarkupAttribute>().Parse()
+                            ?? MH.Parse(attr?.Description, attr?.DescriptionResourceType)
+                            ?? Member.GetCustomAttribute<DescriptionAttribute>()?.Description.ToParagraph();
+            // TODO:summary繧呈､懃ｴ｢縺吶ｋ
         }
 
-        #endregion
+        #endregion Load
 
-        #region 遅延読み込みプロパティ
+        #region 驕・ｻｶ隱ｭ縺ｿ霎ｼ縺ｿ繝励Ο繝代ユ繧｣
+
         /// <summary>
-        /// メンバーが無視されるかどうかを示す値を取得します。
+        /// 繝｡繝ｳ繝舌・縺檎┌隕悶＆繧後ｋ縺九←縺・°繧堤､ｺ縺吝､繧貞叙蠕励＠縺ｾ縺吶・
         /// </summary>
         public bool IsIgnored
             => EnsureLoaded()._IsIgnored;
 
         /// <summary>
-        /// メンバーの処理順を取得します。
+        /// 繝｡繝ｳ繝舌・縺ｮ蜃ｦ逅・・ｒ蜿門ｾ励＠縺ｾ縺吶・
         /// </summary>
         public int Order
             => EnsureLoaded()._Order;
 
-        #endregion
+        /// <summary>
+        /// 繝｡繝ｳ繝舌・繧定｡ｨ縺吶・繝ｼ繧ｯ繧｢繝・・繧貞叙蠕励∪縺溘・險ｭ螳壹＠縺ｾ縺吶・
+        /// </summary>
+        public MarkupParagraph Description
+            => EnsureLoaded()._Description;
 
+        #endregion 驕・ｻｶ隱ｭ縺ｿ霎ｼ縺ｿ繝励Ο繝代ユ繧｣
 
         public abstract CommandMetadataCollection Commands { get; }
 

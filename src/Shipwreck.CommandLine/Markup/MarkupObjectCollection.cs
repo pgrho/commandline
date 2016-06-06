@@ -74,7 +74,7 @@ namespace Shipwreck.CommandLine.Markup
         {
             foreach (var item in this)
             {
-                this.Freeze();
+                item.Freeze();
             }
         }
     }

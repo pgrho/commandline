@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Shipwreck.CommandLine.Markup;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shipwreck.CommandLine.ObjectModels
+namespace Shipwreck.CommandLine
 {
     internal static class RH
     {
@@ -27,7 +28,7 @@ namespace Shipwreck.CommandLine.ObjectModels
 
         public static string GetString(string valueOrKey, Type resourceType)
         {
-            if (resourceType == null)
+            if (valueOrKey == null || resourceType == null)
             {
                 return valueOrKey;
             }

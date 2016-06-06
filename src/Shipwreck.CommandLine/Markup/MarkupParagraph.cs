@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -87,5 +88,29 @@ namespace Shipwreck.CommandLine.Markup
 
         public override IReadOnlyList<MarkupObject> GetChildren()
             => Inlines;
+
+        public static MarkupParagraph FromText(string text, bool freeze = false)
+        { 
+            var p = new MarkupParagraph();
+
+            using (var sr = new StringReader(text))
+            {
+                for (var l = sr.ReadLine(); l != null; l = sr.ReadLine())
+                {
+                    if (p.Inlines.Any())
+                    {
+                        p.Inlines.Add(new MarkupLineBreak());
+                    }
+                    p.Inlines.Add(new MarkupRun(l));
+                }
+            }
+             
+            if (freeze)
+            {
+                p.Freeze();
+            }
+
+            return p;
+        }
     }
 }

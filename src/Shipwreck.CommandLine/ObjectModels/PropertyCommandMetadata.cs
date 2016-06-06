@@ -32,7 +32,7 @@ namespace Shipwreck.CommandLine.ObjectModels
             => new ObjectLoadingContext(parentContext, metadata, settings, args, _Property.GetValue(((ObjectLoadingContext)parentContext).Target));
 
         public override IReadOnlyList<CommandOptionMetadata> GetOptions()
-            => _Property.TypeMetadata.Options;
+            => _Property.TypeMetadata.Properties;
 
         internal override object GetValue(LoadingContextBase context, CommandOptionMetadata metadata)
             => _Property.TypeMetadata.GetValue(context, metadata);

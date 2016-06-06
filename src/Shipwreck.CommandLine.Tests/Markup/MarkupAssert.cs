@@ -116,6 +116,11 @@ namespace Shipwreck.CommandLine.Markup
 
         public static void AreEqual(MarkupObject expected, MarkupObject actual)
         {
+            if (expected == null)
+            {
+                Assert.IsNull(actual);
+                return;
+            }
             var instance = new MarkupAssert(expected);
             instance.Visit(actual);
         }

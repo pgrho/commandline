@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Shipwreck.CommandLine.ObjectModels
 {
-    public abstract class LoaderMetadata : ILoaderMetadata
+    public abstract class LoaderMetadata : MetadataBase, ILoaderMetadata
     {
         public abstract string FullName { get; }
 
@@ -281,7 +281,7 @@ namespace Shipwreck.CommandLine.ObjectModels
 
         private void LoadProperty(TypeMetadata metadata, object target, ArraySegment<string> propertyPath, string value)
         {
-            var p = metadata.Options[propertyPath.First()];
+            var p = metadata.Properties[propertyPath.First()];
 
             if (p == null)
             {

@@ -13,19 +13,7 @@ namespace Shipwreck.CommandLine.ObjectModels
     {
         private static readonly Dictionary<Type, TypeMetadata> _Instances = new Dictionary<Type, TypeMetadata>();
 
-        #region 遅延読み込み状態
 
-        /// <summary>
-        /// <see cref="_IsLoaded" />のロックです。
-        /// </summary>
-        private readonly object _LoadingLock;
-
-        /// <summary>
-        /// <see cref="LoadCore" />が実行されたかどうかを示す値です。
-        /// </summary>
-        private bool _IsLoaded;
-
-        #endregion 遅延読み込み状態
 
         #region 遅延読み込みプロパティ
 
@@ -34,14 +22,13 @@ namespace Shipwreck.CommandLine.ObjectModels
         // TODO:値の設定
         private CommandMetadataCollection _Commands;
 
-        private PropertyMetadataCollection _Options;
+        private PropertyMetadataCollection _Properties;
 
         #endregion 遅延読み込みプロパティ
 
         internal TypeMetadata(Type type)
         {
             Type = type;
-            _LoadingLock = new object();
         }
 
         public override string FullName => Type.FullName;
@@ -57,37 +44,19 @@ namespace Shipwreck.CommandLine.ObjectModels
         public CommandMetadataCollection Commands
             => EnsureLoaded()._Commands;
 
-        public PropertyMetadataCollection Options
-            => EnsureLoaded()._Options;
+        public PropertyMetadataCollection Properties
+            => EnsureLoaded()._Properties;
 
         #endregion 遅延読み込みプロパティ
 
         #region Load
 
-        /// <summary>
-        /// 必要であればメタデータを読み込みます。
-        /// </summary>
-        /// <returns>現在のインスタンス。</returns>
-        protected TypeMetadata EnsureLoaded()
-        {
-            lock (_LoadingLock)
-            {
-                if (_IsLoaded)
-                {
-                    return this;
-                }
+        /// <inheritdoc />
+        protected new TypeMetadata EnsureLoaded()
+           => (TypeMetadata)base.EnsureLoaded();
 
-                LoadCore();
-
-                _IsLoaded = true;
-            }
-            return this;
-        }
-
-        /// <summary>
-        /// 読み込み処理を実行します。
-        /// </summary>
-        protected virtual void LoadCore()
+        /// <inheritdoc />
+        protected override void LoadCore()
         {
             _DefaultSettings = new LoaderSettings(Type);
 
@@ -100,7 +69,7 @@ namespace Shipwreck.CommandLine.ObjectModels
             var cms = commandProps.Select(_ => (CommandMetadata)new PropertyCommandMetadata(pms[_])).Concat(methods.Select(_ => new MethodCommandMetadata(_))).OrderBy(_ => _.Order).ToArray();
 
             _Commands = new CommandMetadataCollection(cms);
-            _Options = new PropertyMetadataCollection(pms.Values.Where(_ => Array.IndexOf(commandProps, _.Property) < 0).ToArray());
+            _Properties = new PropertyMetadataCollection(pms.Values.Where(_ => Array.IndexOf(commandProps, _.Property) < 0).ToArray());
         }
 
         #endregion Load
@@ -119,7 +88,7 @@ namespace Shipwreck.CommandLine.ObjectModels
         }
 
         public override IReadOnlyList<CommandOptionMetadata> GetOptions()
-            => Options;
+            => Properties;
 
         internal override LoadingContextBase CreateContextForCurrentObject(TypeMetadata metadata, LoaderSettings settings, IEnumerable<string> args, object target)
              => new ObjectLoadingContext(metadata, settings, args, target);
