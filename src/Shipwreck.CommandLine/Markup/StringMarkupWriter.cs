@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace Shipwreck.CommandLine.Markup
 {
-    internal sealed class StringWriterMarkupWriter : TextWriterMarkupWriter
+    internal sealed class StringMarkupWriter : MarkupWriter
     {
         /// <summary>
-        /// <see cref="StringWriterMarkupWriter" />クラスの新しいインスタンスを初期化します。
+        /// <see cref="StringMarkupWriter" />クラスの新しいインスタンスを初期化します。
         /// </summary>
-        public StringWriterMarkupWriter()
+        public StringMarkupWriter()
             : base(new StringWriter())
         {
             InlineCodeLeftBracket = InlineCodeRightBracket = string.Empty;

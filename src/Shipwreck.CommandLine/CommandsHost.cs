@@ -9,14 +9,14 @@ namespace Shipwreck.CommandLine
 {
     public abstract class CommandsHost<TParameter, TResult> : ICliCommandsHost<TParameter, TResult>
     {
-        private MarkupWriter _HelpWriter;
+        private MarkupVisitor _HelpWriter;
 
         public abstract TResult Execute(TParameter parameter);
 
         object ICliCommand.Execute(object parameter)
             => Execute((TParameter)parameter);
 
-        public MarkupWriter HelpWriter
+        public MarkupVisitor HelpWriter
         {
             get
             {

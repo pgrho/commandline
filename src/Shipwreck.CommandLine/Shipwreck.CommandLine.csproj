@@ -56,9 +56,9 @@
     <Compile Include="Markup\MarkupParagraph.cs" />
     <Compile Include="Markup\MarkupRun.cs" />
     <Compile Include="Markup\MarkupTextElement.cs" />
+    <Compile Include="Markup\MarkupVisitor.cs" />
+    <Compile Include="Markup\StringMarkupWriter.cs" />
     <Compile Include="Markup\MarkupWriter.cs" />
-    <Compile Include="Markup\StringWriterMarkupWriter.cs" />
-    <Compile Include="Markup\TextWriterMarkupWriter.cs" />
     <Compile Include="MemberAttribute.cs" />
     <Compile Include="ObjectModels\CommandTypeMetadata.cs" />
     <Compile Include="ObjectModels\ICommandMetadata.cs" />

@@ -42,12 +42,17 @@ namespace Shipwreck.CommandLine.Markup
             Blocks.Freeze();
         }
 
-        public static MarkupDocument FromText(string text)
+        public static MarkupDocument FromText(string text, bool freeze = false)
         {
             var md = new MarkupDocument();
             var p = new MarkupParagraph();
             p.Inlines.Add(new MarkupRun(text));
             md.Blocks.Add(p);
+
+            if (freeze)
+            {
+                md.Freeze();
+            }
 
             return md;
         }
@@ -58,7 +63,7 @@ namespace Shipwreck.CommandLine.Markup
             MarkupBlock bl = null;
             using (var sr = new StringReader(markup))
             {
-                for (var l = sr.ReadLine(); ; l = sr.ReadLine())
+                for (var l = sr.ReadLine(); l != null; l = sr.ReadLine())
                 {
                     if (string.IsNullOrWhiteSpace(l))
                     {
@@ -70,6 +75,8 @@ namespace Shipwreck.CommandLine.Markup
                     {
                         bl = (MarkupBlock)MarkupList.TryParseFirstLine(l)
                                 ?? MarkupParagraph.Parse(l);
+
+                        md.Blocks.Add(bl);
                     }
                     else
                     {
@@ -77,13 +84,15 @@ namespace Shipwreck.CommandLine.Markup
                     }
                 }
             }
+
+            return md;
         }
 
         public override string ToString()
         {
-            using (var swmw = new StringWriterMarkupWriter())
+            using (var swmw = new StringMarkupWriter())
             {
-                swmw.Write(this);
+                swmw.Visit(this);
                 swmw.Flush();
                 return swmw.ToString();
             }

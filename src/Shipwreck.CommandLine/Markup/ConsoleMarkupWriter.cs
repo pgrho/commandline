@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Shipwreck.CommandLine.Markup
 {
-    public sealed class ConsoleMarkupWriter : TextWriterMarkupWriter
+    public sealed class ConsoleMarkupWriter : MarkupWriter
     {
         /// <summary>
         /// <see cref="ConsoleMarkupWriter" />クラスの新しいインスタンスを初期化します。
@@ -20,7 +20,7 @@ namespace Shipwreck.CommandLine.Markup
         }
 
         /// <inheritdoc />
-        protected override void WriteInlineCode(MarkupInlineCode code)
+        protected override void VisitInlineCode(MarkupInlineCode code)
         {
             var f = Console.ForegroundColor;
             var b = Console.BackgroundColor;
@@ -28,7 +28,7 @@ namespace Shipwreck.CommandLine.Markup
             Console.ForegroundColor = b;
             Console.BackgroundColor = f;
 
-            base.WriteInlineCode(code);
+            base.VisitInlineCode(code);
 
             Console.ForegroundColor = f;
             Console.BackgroundColor = b;

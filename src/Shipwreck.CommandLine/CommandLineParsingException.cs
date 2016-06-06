@@ -10,7 +10,7 @@ namespace Shipwreck.CommandLine
     public class CommandLineParsingException : Exception
     {
         public CommandLineParsingException(string message)
-            : this(MarkupDocument.FromText(message))
+            : this(MarkupDocument.FromText(message, freeze: true))
         {
         }
 
@@ -21,7 +21,7 @@ namespace Shipwreck.CommandLine
         }
 
         public CommandLineParsingException(string message, Exception innerException)
-            : this(MarkupDocument.FromText(message), innerException)
+            : this(MarkupDocument.FromText(message, freeze: true), innerException)
         {
         }
 

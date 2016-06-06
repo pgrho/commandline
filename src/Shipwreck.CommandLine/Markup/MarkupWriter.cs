@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
@@ -8,105 +8,98 @@ using System.Threading.Tasks;
 
 namespace Shipwreck.CommandLine.Markup
 {
-    public abstract class MarkupWriter : IDisposable
+    public class MarkupWriter : MarkupVisitor
     {
-        public void Write(MarkupDocument document)
+        private readonly bool _LeaveOpen;
+
+        public MarkupWriter(TextWriter writer) : this(writer, false)
+        { }
+
+        public MarkupWriter(TextWriter writer, bool leaveOpen)
         {
-            foreach (var b in document.Blocks)
-            {
-                var l = b as MarkupList;
-                if (l != null)
-                {
-                    WriteList(l);
-                    continue;
-                }
+            Writer = new IndentedTextWriter(writer, " ");
+            _LeaveOpen = leaveOpen;
 
-                WriteParagraph((MarkupParagraph)b);
-            }
+            ListBullet = "* ";
+            ListIndent = 2;
+            InlineCodeLeftBracket = "`";
+            InlineCodeRightBracket = "`";
+        }
 
+        protected IndentedTextWriter Writer { get; }
+
+        public string ListBullet { get; set; }
+
+        public int ListIndent { get; set; }
+
+        public string InlineCodeLeftBracket { get; set; }
+        public string InlineCodeRightBracket { get; set; }
+
+        public override void Visit(MarkupDocument document)
+        {
+            base.Visit(document);
             Flush();
         }
 
-        protected abstract void WriteList(MarkupList list);
-
-        protected abstract void WriteParagraph(MarkupParagraph paragraph);
-
-        protected virtual void WriteInlines(IEnumerable<MarkupInline> inlines)
+        protected override void Dispose(bool disposing)
         {
-            foreach (var i in inlines)
+            if (disposing && !_LeaveOpen)
             {
-                var lineBreak = i as MarkupLineBreak;
-                if (lineBreak != null)
-                {
-                    WriteLineBreak(lineBreak);
-                    continue;
-                }
-                var code = i as MarkupInlineCode;
-                if (code != null)
-                {
-                    WriteInlineCode(code);
-                    continue;
-                }
-                WriteRun((MarkupRun)i);
-            }
-        }
-
-        protected abstract void WriteRun(MarkupRun run);
-
-        protected abstract void WriteInlineCode(MarkupInlineCode code);
-
-        protected abstract void WriteLineBreak(MarkupLineBreak lineBreak);
-
-        public virtual void Flush()
-        {
-        }
-
-        /// <summary>
-        /// インスタンスが破棄されているかどうかを示す値を取得します。
-        /// </summary>
-        protected bool IsDisposed { get; private set; }
-
-        #region IDisposable メソッド
-
-        /// <summary>
-        /// アンマネージ リソースの解放およびリセットに関連付けられているアプリケーション定義のタスクを実行します。
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        #endregion IDisposable メソッド
-
-        #region デストラクタ
-
-        /// <summary>
-        /// オブジェクトがガベジ コレクションにより収集される前に、そのオブジェクトがリソースを解放し、その他のクリーンアップ操作を実行できるようにします。
-        /// </summary>
-        ~MarkupWriter()
-        {
-            Dispose(false);
-        }
-
-        #endregion デストラクタ
-
-        #region 仮想メソッド
-
-        /// <summary>
-        /// アンマネージ リソースの解放およびリセットに関連付けられているアプリケーション定義のタスクを実行します。
-        /// </summary>
-        /// <param name="disposing">メソッドが<see cref="MarkupWriter.Dispose()" />から呼び出された場合は<c>true</c>。その他の場合は<c>false</c>。</param>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (IsDisposed)
-            {
-                return;
+                Writer.InnerWriter.Dispose();
             }
 
-            IsDisposed = true;
+            base.Dispose(disposing);
         }
 
-        #endregion 仮想メソッド
+        protected override void VisitList(MarkupList list)
+        {
+            foreach (var li in list.Items)
+            {
+                VisitListItem(li);
+            }
+            Writer.WriteLine();
+            Writer.WriteLine();
+        }
+
+        protected override void VisitListItem(MarkupListItem listItem)
+        {
+            Writer.Write(ListBullet);
+            var ci = Writer.Indent;
+            Writer.Indent += ListIndent;
+
+            VisitInlines(listItem.Inlines);
+
+            Writer.Indent = ci;
+            Writer.WriteLine();
+        }
+
+        protected override void VisitParagraph(MarkupParagraph paragraph)
+        {
+            VisitInlines(paragraph.Inlines);
+            Writer.WriteLine();
+            Writer.WriteLine();
+        }
+
+        public void Flush()
+        {
+            Writer.Flush();
+        }
+
+        protected override void VisitRun(MarkupRun run)
+        {
+            Writer.Write(run.Text);
+        }
+
+        protected override void VisitInlineCode(MarkupInlineCode code)
+        {
+            Writer.Write(InlineCodeLeftBracket);
+            Writer.Write(code.Text);
+            Writer.Write(InlineCodeRightBracket);
+        }
+
+        protected override void VisitLineBreak(MarkupLineBreak lineBreak)
+        {
+            Writer.WriteLine();
+        }
     }
 }
