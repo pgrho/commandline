@@ -50,6 +50,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Markup\MarkupInlineTest.cs" />
     <Compile Include="ObjectModels\CommandExecuteTest.cs" />
     <Compile Include="ObjectModels\LoaderTest.cs" />
     <Compile Include="ObjectModels\LoaderTestObject.cs" />
@@ -63,6 +64,7 @@
       <Name>Shipwreck.CommandLine</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

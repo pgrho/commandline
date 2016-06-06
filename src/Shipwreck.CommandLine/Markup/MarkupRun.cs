@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Shipwreck.CommandLine.Markup
 {
+    [DebuggerDisplay("{" + nameof(MarkupRun.Text) + "}")]
     public sealed class MarkupRun : MarkupTextElement
     {
         /// <summary>

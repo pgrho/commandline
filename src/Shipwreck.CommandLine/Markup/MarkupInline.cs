@@ -11,8 +11,8 @@ namespace Shipwreck.CommandLine.Markup
     {
         private enum InlineType
         {
-            Text,
-            Code
+            Run,
+            InlineCode
         }
 
         public new MarkupInline Clone()
@@ -20,7 +20,7 @@ namespace Shipwreck.CommandLine.Markup
 
         public static IEnumerable<MarkupInline> ParseInlines(string markupLine)
         {
-            var s = InlineType.Code;
+            var s = InlineType.Run;
             var escaped = false;
             var sb = new StringBuilder();
             var lbAdded = false;
@@ -28,6 +28,12 @@ namespace Shipwreck.CommandLine.Markup
             {
                 if (c == '\r' || c == '\n')
                 {
+                    if (sb.Length > 0)
+                    {
+                        yield return CreateInline(s, sb);
+
+                        s = InlineType.Run;
+                    }
                     if (!lbAdded)
                     {
                         yield return new MarkupLineBreak();
@@ -52,29 +58,28 @@ namespace Shipwreck.CommandLine.Markup
 
                 switch (s)
                 {
-                    case InlineType.Text:
+                    case InlineType.Run:
                         switch (c)
                         {
                             case '`':
                                 if (sb.Length > 0)
                                 {
-                                    yield return new MarkupRun(sb.ToString());
-                                    sb.Clear();
+                                    yield return CreateInline(s, sb);
                                 }
-                                s = InlineType.Code;
+                                s = InlineType.InlineCode;
                                 break;
                             default:
                                 sb.Append(c);
                                 break;
                         }
                         break;
-                    case InlineType.Code:
+                    case InlineType.InlineCode:
                         switch (c)
                         {
                             case '`':
-                                yield return new MarkupCode(sb.ToString());
-                                sb.Clear();
-                                s = InlineType.Text;
+                                yield return CreateInline(s, sb);
+
+                                s = InlineType.Run;
                                 break;
                             default:
                                 sb.Append(c);
@@ -83,6 +88,28 @@ namespace Shipwreck.CommandLine.Markup
                         break;
                 }
             }
+
+            if (sb.Length > 0)
+            {
+                yield return CreateInline(s, sb);
+            }
+        }
+
+        private static MarkupInline CreateInline(InlineType s, StringBuilder sb)
+        {
+            var text = sb.ToString();
+            sb.Clear();
+
+            switch (s)
+            {
+                case InlineType.Run:
+                    return new MarkupRun(text);
+
+                case InlineType.InlineCode:
+                    return new MarkupInlineCode(text);
+
+            }
+            throw new NotImplementedException();
         }
     }
 }

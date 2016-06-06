@@ -22,12 +22,18 @@ namespace Shipwreck.CommandLine.Markup
 
             ListBullet = "* ";
             ListIndent = 2;
+            InlineCodeLeftBracket = "`";
+            InlineCodeRightBracket = "`";
         }
 
         protected IndentedTextWriter Writer { get; }
 
         public string ListBullet { get; set; }
+
         public int ListIndent { get; set; }
+
+        public string InlineCodeLeftBracket { get; set; }
+        public string InlineCodeRightBracket { get; set; }
 
         protected override void Dispose(bool disposing)
         {
@@ -73,9 +79,11 @@ namespace Shipwreck.CommandLine.Markup
             Writer.Write(run.Text);
         }
 
-        protected override void WriteCode(MarkupCode code)
+        protected override void WriteInlineCode(MarkupInlineCode code)
         {
+            Writer.Write(InlineCodeLeftBracket);
             Writer.Write(code.Text);
+            Writer.Write(InlineCodeRightBracket);
         }
 
         protected override void WriteLineBreak(MarkupLineBreak lineBreak)

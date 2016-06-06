@@ -41,10 +41,10 @@ namespace Shipwreck.CommandLine.Markup
                     WriteLineBreak(lineBreak);
                     continue;
                 }
-                var code = i as MarkupCode;
+                var code = i as MarkupInlineCode;
                 if (code != null)
                 {
-                    WriteCode(code);
+                    WriteInlineCode(code);
                     continue;
                 }
                 WriteRun((MarkupRun)i);
@@ -53,7 +53,7 @@ namespace Shipwreck.CommandLine.Markup
 
         protected abstract void WriteRun(MarkupRun run);
 
-        protected abstract void WriteCode(MarkupCode code);
+        protected abstract void WriteInlineCode(MarkupInlineCode code);
 
         protected abstract void WriteLineBreak(MarkupLineBreak lineBreak);
 

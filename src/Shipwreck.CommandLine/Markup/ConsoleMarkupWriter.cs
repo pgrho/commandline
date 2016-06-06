@@ -16,6 +16,22 @@ namespace Shipwreck.CommandLine.Markup
         public ConsoleMarkupWriter()
             : base(Console.Out)
         {
+            InlineCodeLeftBracket = InlineCodeRightBracket = string.Empty;
+        }
+
+        /// <inheritdoc />
+        protected override void WriteInlineCode(MarkupInlineCode code)
+        {
+            var f = Console.ForegroundColor;
+            var b = Console.BackgroundColor;
+
+            Console.ForegroundColor = b;
+            Console.BackgroundColor = f;
+
+            base.WriteInlineCode(code);
+
+            Console.ForegroundColor = f;
+            Console.BackgroundColor = b;
         }
     }
 }
