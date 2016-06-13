@@ -42,6 +42,11 @@ namespace Shipwreck.CommandLine.ObjectModels
         /// </summary>
         private MarkupParagraph _Description;
 
+        /// <summary>
+        /// <see cref="ValueDescription" />のバッキングストアです。
+        /// </summary>
+        private MarkupParagraph _ValueDescription;
+
         #endregion 遅延読み込みプロパティ
 
         internal CommandOptionMetadata(string memberName, ICustomAttributeProvider member, Type memberType)
@@ -104,6 +109,12 @@ namespace Shipwreck.CommandLine.ObjectModels
         public MarkupParagraph Description
             => EnsureLoaded()._Description;
 
+        /// <summary>
+        /// 値の詳細を表すマークアップを取得または設定します。
+        /// </summary>
+        public MarkupParagraph ValueDescription
+            => EnsureLoaded()._ValueDescription;
+
         #endregion 遅延読み込みプロパティ
 
         #region Load
@@ -156,7 +167,9 @@ namespace Shipwreck.CommandLine.ObjectModels
             _Description = Member.GetCustomAttribute<DescriptionMarkupAttribute>().Parse()
                             ?? MH.Parse(attr?.Description, attr?.DescriptionResourceType)
                             ?? Member.GetCustomAttribute<DescriptionAttribute>()?.Description.ToParagraph();
-            // TODO:summaryを検索する
+
+            _ValueDescription = Member.GetCustomAttribute<ValueMarkupAttribute>().Parse()
+                            ?? MH.Parse(attr?.ValueDescription, attr?.ValueDescriptionResourceType);
         }
 
         #endregion Load

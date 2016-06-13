@@ -102,6 +102,7 @@
     <Compile Include="ReflectionHelper.cs" />
     <Compile Include="ObjectModels\TypeMetadata.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ValueMarkupAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\SR.ja.resx" />

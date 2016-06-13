@@ -14,15 +14,19 @@ namespace Shipwreck.CommandLine
     {
         public string Name { get; set; }
 
+        #region Description
+
         /// <summary>
         /// メンバーを表すマークアップの文字列またはリソースキーを取得または設定します。
         /// </summary>
         public string Description { get; set; }
 
         /// <summary>
-        /// <see cref="Description" />を含むリソースの型を取得または設定します。
+        /// <see cref="Description" /> を含むリソースの型を取得または設定します。
         /// </summary>
         public Type DescriptionResourceType { get; set; }
+
+        #endregion Description
 
         /// <summary>
         /// メンバーが無視されるかどうかを示す値を取得または設定します。

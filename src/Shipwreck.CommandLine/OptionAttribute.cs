@@ -22,5 +22,19 @@ namespace Shipwreck.CommandLine
         /// 無名オプション内のプロパティの優先順位を取得または設定します。
         /// </summary>
         public int AnonymousPrecedence { get; set; }
+
+        #region ValueDescription
+
+        /// <summary>
+        /// 値の詳細を表すマークアップの文字列またはリソースキーを取得または設定します。
+        /// </summary>
+        public string ValueDescription { get; set; }
+
+        /// <summary>
+        /// <see cref="ValueDescription" /> を含むリソースの型を取得または設定します。
+        /// </summary>
+        public Type ValueDescriptionResourceType { get; set; }
+
+        #endregion ValueDescription
     }
 }

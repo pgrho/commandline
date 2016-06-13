@@ -11,6 +11,8 @@ namespace Shipwreck.CommandLine.ObjectModels
     [TestClass]
     public class PropertyMetadataTest
     {
+        #region Description
+
         public class DT : TestCliCommand
         {
             [DescriptionMarkup(nameof(Expectations.MarkupKey), typeof(Expectations))]
@@ -32,51 +34,125 @@ namespace Shipwreck.CommandLine.ObjectModels
         }
 
         [TestMethod]
-        public void DesciptionTest_1()
+        public void DescriptionTest_1()
         {
             MarkupAssert.AreEqual(
                 TH.ExpectedParagraph,
-                TypeMetadata.FromType(typeof(DT)).Properties[nameof(DT.DescriptionProperty1)].Description);
+                TypeMetadata.FromType(typeof(DT))
+                    .Properties[nameof(DT.DescriptionProperty1)].Description);
         }
 
         [TestMethod]
-        public void DesciptionTest_2()
+        public void DescriptionTest_2()
         {
             MarkupAssert.AreEqual(
                 TH.ExpectedRawParagraph,
-                TypeMetadata.FromType(typeof(DT)).Properties[nameof(DT.DescriptionProperty2)].Description);
+                TypeMetadata.FromType(typeof(DT))
+                    .Properties[nameof(DT.DescriptionProperty2)].Description);
         }
 
         [TestMethod]
-        public void DesciptionTest_3()
+        public void DescriptionTest_3()
         {
             MarkupAssert.AreEqual(
                 TH.ExpectedParagraph,
-                TypeMetadata.FromType(typeof(DT)).Properties[nameof(DT.DescriptionProperty3)].Description);
+                TypeMetadata.FromType(typeof(DT))
+                    .Properties[nameof(DT.DescriptionProperty3)].Description);
         }
 
         [TestMethod]
-        public void DesciptionTest_4()
+        public void DescriptionTest_4()
         {
             MarkupAssert.AreEqual(
                 TH.ExpectedRawParagraph,
-                TypeMetadata.FromType(typeof(DT)).Properties[nameof(DT.DescriptionProperty4)].Description);
+                TypeMetadata.FromType(typeof(DT))
+                    .Properties[nameof(DT.DescriptionProperty4)].Description);
         }
 
         [TestMethod]
-        public void DesciptionTest_5()
+        public void DescriptionTest_5()
         {
             MarkupAssert.AreEqual(
                 TH.ExpectedRawParagraph,
-                TypeMetadata.FromType(typeof(DT)).Properties[nameof(DT.DescriptionProperty5)].Description);
+                TypeMetadata.FromType(typeof(DT))
+                    .Properties[nameof(DT.DescriptionProperty5)].Description);
         }
 
         [TestMethod]
-        public void DesciptionTest_6()
+        public void DescriptionTest_6()
         {
             MarkupAssert.AreEqual(
                 null,
-                TypeMetadata.FromType(typeof(DT)).Properties[nameof(DT.DescriptionProperty6)].Description);
+                TypeMetadata.FromType(typeof(DT))
+                    .Properties[nameof(DT.DescriptionProperty6)].Description);
         }
+
+        #endregion Description
+
+        #region ValueDescription
+
+        public class VT : TestCliCommand
+        {
+            [ValueMarkup(nameof(Expectations.MarkupKey), typeof(Expectations))]
+            public int ValueDescriptionProperty1 { get; set; }
+
+            [ValueMarkup(nameof(Expectations.MarkupKey))]
+            public int ValueDescriptionProperty2 { get; set; }
+
+            [Option(ValueDescription = nameof(Expectations.MarkupKey), ValueDescriptionResourceType = typeof(Expectations))]
+            public int ValueDescriptionProperty3 { get; set; }
+
+            [Option(ValueDescription = nameof(Expectations.MarkupKey))]
+            public int ValueDescriptionProperty4 { get; set; }
+
+            public int ValueDescriptionProperty5 { get; set; }
+        }
+
+        [TestMethod]
+        public void ValueDescriptionTest_1()
+        {
+            MarkupAssert.AreEqual(
+                TH.ExpectedParagraph,
+                TypeMetadata.FromType(typeof(VT))
+                    .Properties[nameof(VT.ValueDescriptionProperty1)].ValueDescription);
+        }
+
+        [TestMethod]
+        public void ValueDescriptionTest_2()
+        {
+            MarkupAssert.AreEqual(
+                TH.ExpectedRawParagraph,
+                TypeMetadata.FromType(typeof(VT))
+                    .Properties[nameof(VT.ValueDescriptionProperty2)].ValueDescription);
+        }
+
+        [TestMethod]
+        public void ValueDescriptionTest_3()
+        {
+            MarkupAssert.AreEqual(
+                TH.ExpectedParagraph,
+                TypeMetadata.FromType(typeof(VT))
+                    .Properties[nameof(VT.ValueDescriptionProperty3)].ValueDescription);
+        }
+
+        [TestMethod]
+        public void ValueDescriptionTest_4()
+        {
+            MarkupAssert.AreEqual(
+                TH.ExpectedRawParagraph,
+                TypeMetadata.FromType(typeof(VT))
+                    .Properties[nameof(VT.ValueDescriptionProperty4)].ValueDescription);
+        }
+
+        [TestMethod]
+        public void ValueDescriptionTest_5()
+        {
+            MarkupAssert.AreEqual(
+                null,
+                TypeMetadata.FromType(typeof(VT))
+                    .Properties[nameof(VT.ValueDescriptionProperty5)].ValueDescription);
+        }
+
+        #endregion ValueDescription
     }
 }
